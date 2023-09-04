@@ -3,6 +3,16 @@ export const gender = [
   { name: "Perempuan", value: "0" },
 ];
 
+export const status_alergi = [
+  {name: "Ya", value: "1"},
+  {name: "Tidak", value: "0"},
+];
+
+export const status_kehamilan = [
+  {name: "Ya", value: "1"},
+  {name: "Tidak", value: "0"},
+];
+
 export const maritalStatus = [
   { name: "Belum menikah", value: "Belum menikah" },
   { name: "Sudah menikah", value: "Sudah menikah" },
@@ -50,6 +60,14 @@ export const statusAktif = [
   { name: "AKTIF", value: true },
   { name: "TIDAK AKTIF", value: false },
 ];
+
+export const jenisGudang = () => {
+  return Promise.resolve({
+    "data" : {
+      "data" : [{ id: 1, name: 'Rawat Jalan' },{ id: 2, name: 'Rawat Inap' },]
+    }
+  });
+};
 
 // whole country
 // export const countries = [

@@ -3,6 +3,7 @@ import People from "@material-ui/icons/PeopleAltOutlined";
 import Hospital from "@material-ui/icons/LocalHospitalOutlined";
 import UserAuth from "@mui/icons-material/AdminPanelSettingsOutlined";
 import SettingsIcon from "@mui/icons-material/Settings";
+import InventoryIcon from '@mui/icons-material/Inventory';
 
 let SideList = [
   {
@@ -35,10 +36,19 @@ let SideList = [
     permission: ["pasien:all", "rawatjalan:all", "rawatinap:all"],
     children: [
       {
-        // name: "Pasien",
         name: "Pendaftaran",
         permission: ["pasien:all", "rawatjalan:all", "rawatinap:all"],
         routePath: "/pasien",
+      },
+      {
+        name: "Radiologi",
+        permission: ["radiologi:all"],
+        routePath: "/radiologi",
+      },
+      {
+        name: "BMHP Radiologi",
+        permission: ["bmhpradiologi:all"],
+        routePath: "/bmhpradiologi",
       },
     ],
     childrenState: false,
@@ -80,6 +90,45 @@ let SideList = [
         routePath: "/pekerjaan",
       },
       { name: "Suku", permission: ["suku:all"], routePath: "/suku" },
+    ],
+    childrenState: false,
+    routePath: null,
+  },
+  {
+    name: "Gudang",
+    icon: < InventoryIcon />,
+    permission: [],
+    children: [
+      {
+        name: "Purchase Order",
+        permission: [],
+        routePath: "/gudang/purchase-order",
+      },
+      {
+        name: "Pembelian",
+        permission: [],
+        routePath: "/gudang/pembelian",
+      },
+      {
+        name: "Mutasi",
+        permission: [],
+        routePath: "/gudang/mutasi",
+      },
+      {
+        name: "Retur",
+        permission: [],
+        routePath: "/gudang/retur",
+      },
+      {
+        name: "Inventory",
+        permission: [],
+        routePath: "/gudang/inventory",
+      },
+      {
+        name: "Laporan",
+        permission: [],
+        routePath: "/gudang/laporan",
+      },
     ],
     childrenState: false,
     routePath: null,
