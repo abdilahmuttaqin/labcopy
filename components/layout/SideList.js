@@ -50,6 +50,11 @@ let SideList = [
         permission: ["bmhpradiologi:all"],
         routePath: "/bmhpradiologi",
       },
+      {
+        name: "Daftar pasien",
+        permission: ["laboratorium:all"],
+        routePath: "/laboratorium/cobadaftarpasien",
+      },
     ],
     childrenState: false,
 
