@@ -51,9 +51,9 @@ let SideList = [
         routePath: "/bmhpradiologi",
       },
       {
-        name: "Daftar pasien",
+        name: "Laboratorium",
         permission: ["laboratorium:all"],
-        routePath: "/laboratorium/cobadaftarpasien",
+        routePath: "/laboratorium/pasienlab",
       },
     ],
     childrenState: false,
@@ -136,6 +136,27 @@ let SideList = [
       },
     ],
     childrenState: false,
+    routePath: null,
+  },
+  {
+    name: "inventory Lab",
+    icon: <InventoryIcon />,
+    permission: ["pasien:all", "rawatjalan:all", "rawatinap:all"],
+    children: [
+      {
+        name: "Permintaan",
+        permission: ["pasien:all", "rawatjalan:all", "rawatinap:all"],
+        routePath: "/laboratorium/inventory/permintaan",
+      },
+      {
+        name: "Stok",
+        permission: ["radiologi:all"],
+        routePath: "/laboratorium/inventory/stok",
+      },
+
+    ],
+    childrenState: false,
+
     routePath: null,
   },
 ];

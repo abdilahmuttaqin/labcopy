@@ -7,7 +7,7 @@ import {
   getDetailGroupingPemeriksaanLaboratorium,
   getDetailPermintaanPemeriksaanLaboratorium,
   showLaboratorium,
-} from "api/radiologi";
+} from "api/laboratorium";
 import LoaderOnLayout from "components/LoaderOnLayout";
 import FormPasien from "components/modules/pasien/form";
 import { formatGenToIso } from "utils/formatTime";
@@ -20,10 +20,10 @@ import useClientPermission from "custom-hooks/useClientPermission";
 import { formatLabelDate } from "utils/formatTime";
 import { Grid, Card, IconButton, Tooltip, Avatar, Dialog } from "@mui/material";
 import PermContactCalendarIcon from "@mui/icons-material/PermContactCalendar";
-import FormExpertise from "components/modules/radiologi/formExpertise";
-import RiwayatPemeriksaanTable from "components/modules/radiologi/riwayatPemeriksaanTable";
-import Assessment from "components/modules/radiologi/assessment";
-import PermintaanRadiologiTableLayout from "components/modules/radiologi/permintaanRadiologiTableLayout";
+import FormExpertise from "components/modules/laboratorium/formExpertise";
+import RiwayatPemeriksaanTable from "components/modules/laboratorium/riwayatPemeriksaanTable";
+import Assessment from "components/modules/laboratorium/assessment";
+// import PermintaanLaboratoriumTableLayout from "components/modules/laboratorium/permintaanLaboratoriumTableLayout";
 
 const permintaanTableHead = [
   {
@@ -115,7 +115,7 @@ const DetailLaboratorium = () => {
   const [detailDataPasien, setDetailDataPasien] = useState({});
   const [isLoadingDataPasien, setIsLoadingDataPasien] = useState(true);
 
-  const [dataPermintaanLaboratoriumPerPage, setPermintaanRadiologiPerPage] =
+  const [dataPermintaanLaboratoriumPerPage, setPermintaanLaboratriumPerPage] =
     useState(8);
   const [
     isLoadingDataPermintaanLaboratorium,
@@ -172,15 +172,15 @@ const DetailLaboratorium = () => {
   };
 
   const [dataPermintaanLaboratorium, setDataPermintaanLaboratorium] = useState({});
-  // const [detailDataPermintaanRadiologi, setDetailDataPermintaanRadiologi] =
+  // const [detailDataPermintaanLaboratrium, setDetailDataPermintaanLaboratrium] =
   //   useState({});
   const [dataMetaPermintaanLaboratorium, setDataMetaPermintaanLaboratorium] =
     useState({});
-  // const [dataRadiologi, setDataRadiologi] = useState({});
+  // const [dataLaboratrium, setDataLaboratrium] = useState({});
   const [detailDataAntrianLaboratorium, setDetailDataAntrianLaboratorium] = useState(
     {}
   );
-  // const [isLoadingDataRadiologi, setIsLoadingDataRadiologi] = useState(true);
+  // const [isLoadingDataLaboratrium, setIsLoadingDataLaboratrium] = useState(true);
 
   const [detailAssPas, setDataAssPas] = useState({});
   const [detailAssPem, setDataAssPem] = useState({});
@@ -234,8 +234,8 @@ const DetailLaboratorium = () => {
   };
 
   // const updateData = (data) => {
-  //   setDetailDataRadiologi(data);
-  //   setDataRadiologi(() => dataFormatter(data));
+  //   setDetailDataLaboratrium(data);
+  //   setDataLaboratrium(() => dataFormatter(data));
   // };
 
   useEffect(() => {
@@ -310,10 +310,10 @@ const DetailLaboratorium = () => {
       label: "Permintaan Laboratorium",
       component: (
         <>
-          <PermintaanRadiologiTableLayout
+          <PermintaanLaboratoriumTableLayout
             tableHead={permintaanTableHead}
             data={dataPermintaanLaboratorium}
-          ></PermintaanRadiologiTableLayout>
+          ></PermintaanLaboratoriumTableLayout>
         </>
       ),
     },

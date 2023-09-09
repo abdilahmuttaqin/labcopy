@@ -4,7 +4,7 @@ import {
   getListLaboratorium,
   deleteLaboratorium,
   searchLaboratorium,
-} from "api/radiologi";
+} from "api/laboratorium";
 import TableLayout from "components/TableLayout";
 import TableLayoutV3 from "components/TableLayoutV3";
 import LoaderOnLayout from "components/LoaderOnLayout";
@@ -25,12 +25,20 @@ const laboratoriumTableHead = [
     label: "Nama Pasien",
   },
   {
-    id: "alamat_domisili",
+    id: "alamat",
     label: "Alamat",
   },
   {
     id: "tipe_jaminan",
     label: "Tipe jaminan",
+  },
+  {
+    id: "prioritas",
+    label: "Prioritas",
+  },
+  {
+    id: "unit",
+    label: "Unit",
   },
   {
     id: "dokter",
@@ -43,9 +51,11 @@ const dataLaboratoriumFormatHandler = (payload) => {
     return {
       antrian: e.no_antrian || "null",
       no_rm: e.no_rm || "null",
-      nama_pasien: e.nama_pasien || "null",
-      alamat_domisili: e.alamat_domisili || "null",
+      nama: e.nama || "null",
+      alamat: e.alamat || "null",
       asuransi: e.tipe_jaminan || "null",
+      prioritas: e.prioritas || "Null",
+      unit: e.unit || "null",
       dokter: e.dokter || "null",
       id: e.id,
     };
@@ -54,7 +64,7 @@ const dataLaboratoriumFormatHandler = (payload) => {
   return result;
 };
 
-const Radiologi = () => {
+const Laboratorium = () => {
   const [dataPasien, setDataPasien] = useState([]);
   const [dataMetaPasien, setDataMetaPasien] = useState({});
   const [isLoadingDataPasien, setIsLoadingDataPasien] = useState(false);
@@ -246,6 +256,6 @@ const Radiologi = () => {
   );
 };
 
-export default Radiologi;
+export default Laboratorium;
 
 
