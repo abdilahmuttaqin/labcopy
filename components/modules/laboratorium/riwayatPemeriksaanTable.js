@@ -28,26 +28,18 @@ const RiwayatPemeriksaanTable = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Tanggal Pemeriksaan</TableCell>
-              <TableCell>No. Pemeriksaan</TableCell>
-              <TableCell>Nama Pemeriksaan</TableCell>
-              <TableCell>Jenis Pemeriksaan</TableCell>
-              <TableCell>Dokter Pengirim</TableCell>
-              <TableCell>Diagnosis Kerja</TableCell>
-              <TableCell>Detail</TableCell> 
+              <TableCell align="center">Tanggal Pemeriksaan</TableCell>
+              <TableCell align="center">Nama Pemeriksaan</TableCell>
+              <TableCell align="center">Jenis Pemeriksaan</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {dataPermintaanRadiologi.map((data, index) => (
               <TableRow key={index}>
                 <TableCell>{data.waktuPemeriksaan}</TableCell>
-                <TableCell>{data.noPemeriksaan}</TableCell>
                 <TableCell>{data.namaPemeriksaan}</TableCell>
                 <TableCell>{data.jenisPemeriksaan}</TableCell>
-                <TableCell>{data.dokterPengirim}</TableCell>
-                <TableCell>{data.diagnosisKerja}</TableCell>
-                <TableCell>
-
+                {/* <TableCell>
                   <Link
                     href={{
                       pathname: "components/modules/radiologi/detailRiwayat.js",
@@ -59,7 +51,7 @@ const RiwayatPemeriksaanTable = () => {
                       Detail
                     </Button>
                   </Link>
-                </TableCell>
+                </TableCell> */}
               </TableRow>
             ))}
           </TableBody>

@@ -13,50 +13,50 @@ import { getListPasien } from "api/pasien";
 
 const laboratoriumTableHead = [
   {
-    id: "no_antrian",
-    label: "No. Antrian",
-  },
-  {
-    id: "no_rm",
-    label: "No. RM",
+    id: "status_pasien",
+    label: "Status Pasien",
   },
   {
     id: "nama",
     label: "Nama Pasien",
   },
   {
+    id: "umur",
+    label: "Umur Pasien",
+  },
+  {
+    id: "no_rm",
+    label: "No Rekam Medis",
+  },
+  {
     id: "alamat",
     label: "Alamat",
   },
   {
-    id: "tipe_jaminan",
-    label: "Tipe jaminan",
-  },
-  {
-    id: "prioritas",
+    id: "tgl_permintaan",
     label: "Prioritas",
   },
   {
-    id: "unit",
-    label: "Unit",
+    id: "gol_darah",
+    label: "Golongan Darah",
   },
   {
-    id: "dokter",
-    label: "Dokter",
+    id: "komponen_darah",
+    label: "Komponen Darah yang Diminta",
   },
 ];
 
 const dataLaboratoriumFormatHandler = (payload) => {
   const result = payload.map((e) => {
     return {
-      antrian: e.no_antrian || "null",
-      no_rm: e.no_rm || "null",
+      status_pasien: e.status_pasien || "null",
       nama: e.nama || "null",
+      umur: e.umur || "null",
+      no_rm: e.no_rm || "null",
       alamat: e.alamat || "null",
-      asuransi: e.tipe_jaminan || "null",
-      prioritas: e.prioritas || "null",
-      unit: e.unit || "null",
-      dokter: e.dokter || "null",
+      tgl: e.tgl_permintaan || "null",
+      gol_darah: e.gol_darah || "null",
+      komponen_darah: e.komponen_darah || "null",
       id: e.id,
     };
   });
@@ -208,7 +208,7 @@ const Laboratorium = () => {
         <>
           <TableLayoutPasienLab
             baseRoutePath={`${router.asPath}`}
-            title="Pasien Laboratorium"
+            title="Tranfusi Darah"
             tableHead={laboratoriumTableHead}
             data={dataLaboratorium}
             meta={dataMetaLaboratorium}
@@ -216,8 +216,6 @@ const Laboratorium = () => {
             isUpdatingData={isUpdatingDataLaboratorium}
             filterOptions={[
               { label: "Tipe Jaminan", value: "asuransi" },
-              { label: "Pelayanan", value: "poli" },
-              { label: "Prioritas", value: "prioritas" },
               { label: "Tanggal", value: "date" },
             ]}
             updateDataPerPage={(e) => {

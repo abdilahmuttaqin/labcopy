@@ -10,9 +10,17 @@ export function getListLaboratorium(params) {
   });
 }
 
+export function getDetailPasienLab(params) {
+  return request({
+    url: `${process.env.NEXT_PUBLIC_MOCK_BASE_URL}/pasienlab/show`,
+    method: "GET",
+    params,
+  });
+}
+
 export function searchLaboratorium(params) {
   return request({
-    url: `${process.env.NEXT_PUBLIC_MOCK_BASE_URL}/rs-service/antrianlaboratorium/search`,
+    url: `${process.env.NEXT_PUBLIC_GATEWAY_BASE_URL}/rs-service/permintaanlab/search`,
     method: "GET",
     params,
   });
@@ -20,7 +28,7 @@ export function searchLaboratorium(params) {
 
 export function showLaboratorium(params) {
   return request({
-    url: `${process.env.NEXT_PUBLIC_MOCK_BASE_URL}/rs-service/antrianlaboratorium/show`,
+    url: `${process.env.NEXT_PUBLIC_GATEWAY_BASE_URL}/rs-service/permintaanlab/show`,
     method: "GET",
     params,
   });
@@ -59,17 +67,25 @@ export function updateinventoryLaboratorium(data) {
   });
 }
 
-export function deleteBmhpLaboratorium(data) {
+export function createPermintaanLab(data) {
   return request({
-    url: `${process.env.NEXT_PUBLIC_MOCK_BASE_URL}/rs-service/bmhplaboratorium`,
+    url: `${process.env.NEXT_PUBLIC_MOCK_BASE_URL}/rs-service/permintaanlab`,
+    method: "POST",
+    data,
+  });
+}
+
+export function deletePermintaanLab(data) {
+  return request({
+    url: `${process.env.NEXT_PUBLIC_MOCK_BASE_URL}/rs-service/permintaanlab`,
     method: "DELETE",
     data,
   });
 }
 
-export function searchBmhpLaboratorium(params) {
+export function searchPermintaanLab(params) {
   return request({
-    url: `${process.env.NEXT_PUBLIC_MOCK_BASE_URL}/rs-service/bmhplaboratorium/search`,
+    url: `${process.env.NEXT_PUBLIC_MOCK_BASE_URL}/rs-service/permintaanlab/search`,
     method: "GET",
     params,
   });
@@ -78,7 +94,7 @@ export function searchBmhpLaboratorium(params) {
 //Permintaan Pemeriksaan Laboratorium
 export function getListPermintaanPemeriksaanLaboratorium(params) {
   return request({
-    url: `${process.env.NEXT_PUBLIC_MOCK_BASE_URL}/rs-service/permintaanpemeriksaanlaboratorium`,
+    url: `${process.env.NEXT_PUBLIC_MOCK_BASE_URL}/rs-service/permintaanlab`,
     method: "GET",
     params,
   });
@@ -86,7 +102,7 @@ export function getListPermintaanPemeriksaanLaboratorium(params) {
 
 export function getDetailPermintaanPemeriksaanLaboratorium(params) {
   return request({
-    url: `${process.env.NEXT_PUBLIC_MOCK_BASE_URL}/rs-service/permintaanpemeriksaanlaboratorium/show`,
+    url: `${process.env.NEXT_PUBLIC_MOCK_BASE_URL}/rs-service/permintaanlab/show`,
     method: "GET",
     params,
   });

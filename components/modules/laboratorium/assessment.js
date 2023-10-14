@@ -4,11 +4,13 @@ import FormAssessmentPetugas from './formAssessmentPetugas';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
+import FormAssessmentPemeriksaan from './formAssessmentPemeriksaan';
 
 const Assessment = () => {
   const [activeForm, setActiveForm] = useState(null);
-  const [selectedNamaPemeriksaan, setSelectedNamaPemeriksaan] = useState(null);
-  const [selectedJenisPemeriksaan, setSelectedJenisPemeriksaan] = useState(null);
+  // const [selectedNamaPemeriksaan, setSelectedNamaPemeriksaan] = useState(null);
+  // const [selectedJenisPemeriksaan, setSelectedJenisPemeriksaan] = useState(null);
+  // const [selectedTarifPemeriksaan, setSelectedTarifPemeriksaan] = useState(null);
 
   const handleFormClick = (formType, permintaanData) => {
     setActiveForm(formType);
@@ -45,9 +47,7 @@ const Assessment = () => {
           )}
           {activeForm === 'petugas' && (
             <>
-              <p>Nama Pemeriksaan: {selectedNamaPemeriksaan}</p>
-              <p>Jenis Pemeriksaan: {selectedJenisPemeriksaan}</p>
-              <FormAssessmentPetugas />
+              < FormAssessmentPemeriksaan/>
             </>
           )}
         </div>

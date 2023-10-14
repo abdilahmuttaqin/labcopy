@@ -209,10 +209,10 @@ const FormExpertise = ({ isEditType = false,
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell align="center">No</TableCell>
-                      <TableCell align="center">Foto</TableCell>
-                      <TableCell align="center">Hasil Expertise</TableCell>
-                      <TableCell align="center">Action</TableCell>
+                      <TableCell align="center">Nama Pemeriksaan</TableCell>
+                      <TableCell align="center">Hasil</TableCell>
+                      <TableCell align="center">Nilai Rujukan</TableCell>
+                      <TableCell align="center">Satuan</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -308,7 +308,7 @@ const FormExpertise = ({ isEditType = false,
                 type="file"
                 onChange={handleAddImage}
               />
-              <label htmlFor="image-upload-expertise">
+              {/* <label htmlFor="image-upload-expertise">
                 <Button
                   variant="contained"
                   component="span"
@@ -317,7 +317,7 @@ const FormExpertise = ({ isEditType = false,
                 >
                   Tambah Gambar
                 </Button>
-              </label>
+              </label> */}
 
               <ReactToPrint
                 trigger={() => (

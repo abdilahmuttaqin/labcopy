@@ -50,11 +50,12 @@ let SideList = [
         permission: ["bmhpradiologi:all"],
         routePath: "/bmhpradiologi",
       },
-      {
-        name: "Laboratorium",
-        permission: ["laboratorium:all"],
-        routePath: "/laboratorium/pasienlab",
-      },
+      // {
+      //   name: "Laboratorium",
+      //   permission: ["laboratorium:all"],
+      //   routePath: "/laboratorium/pasienlab",
+      // },
+
     ],
     childrenState: false,
 
@@ -152,6 +153,27 @@ let SideList = [
         name: "Stok",
         permission: ["radiologi:all"],
         routePath: "/laboratorium/inventory/stok",
+      },
+
+    ],
+    childrenState: false,
+
+    routePath: null,
+  },
+  {
+    name: "Laboratorium",
+    icon: <Hospital />,
+    permission: ["pasien:all", "rawatjalan:all", "rawatinap:all"],
+    children: [
+      {
+        name: "Pasien",
+        permission: ["laboratorium:all"],
+        routePath: "/laboratorium/pasienlab",
+      },
+      {
+        name: "Tranfusi Darah",
+        permission: ["laboratorium:all"],
+        routePath: "/laboratorium/tranfusi",
       },
 
     ],

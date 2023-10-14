@@ -78,7 +78,7 @@ export function searchBmhpRadiologi(params) {
 //Permintaan Pemeriksaan Radiologi
 export function getListPermintaanPemeriksaanRadiologi(params) {
   return request({
-    url: `${process.env.NEXT_PUBLIC_GATEWAY_BASE_URL}/rs-service/permintaanpemeriksaanradiologi`,
+    url: `${process.env.NEXT_PUBLIC_GATEWAY_BASE_URL}/rs-service/permintaanradiologi`,
     method: "GET",
     params,
   });
@@ -86,7 +86,7 @@ export function getListPermintaanPemeriksaanRadiologi(params) {
 
 export function getDetailPermintaanPemeriksaanRadiologi(params) {
   return request({
-    url: `${process.env.NEXT_PUBLIC_GATEWAY_BASE_URL}/rs-service/permintaanpemeriksaanradiologi/show`,
+    url: `${process.env.NEXT_PUBLIC_GATEWAY_BASE_URL}/rs-service/permintaanradiologi/show`,
     method: "GET",
     params,
   });

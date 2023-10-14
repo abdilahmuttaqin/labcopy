@@ -17,14 +17,14 @@ import EditIcon from "@material-ui/icons/Edit";
 import Switch from "@mui/material/Switch";
 import useClientPermission from "custom-hooks/useClientPermission";
 import Snackbar from "components/SnackbarMui";
-import {getListAsesmenPasienLab, createAsesmenPasienLab, updateAsesmenPasienLab, getDetailAsesmenPasienLab} from "api/laboratorium";
+import {getListAsesmenPemeriksaanLab, createAsesmenPemeriksaanLab, updateAsesmenPemeriksaanLab, getDetailAsesmenPemeriksaanLab} from "api/laboratorium";
 import { formatIsoToGen } from "utils/formatTime";
 import { statusAlergi, statusKehamilan } from "public/static/data";
 
 import SelectStatic from "components/SelectStatic";
 
 
-const FormAssessmentPasien = ({  
+const FormAssessmentPemeriksaan = ({  
   data,
   isEditType = false,
   prePopulatedDataForm = {},
@@ -42,40 +42,40 @@ const FormAssessmentPasien = ({
     type: null,
     message: "",
   });
-  const [dataAssessmentPasienLabPerPage, setAssessmentPasienLabPerPage] = useState(8);
+  const [dataAssessmentPemeriksaanLabPerPage, setAssessmentPemeriksaanLabPerPage] = useState(8);
   const [
-    isLoadingDataAssessmentPasienLab,
-    setIsLoadingDataAssessmentPasienLab,
+    isLoadingDataAssessmentPemeriksaanLab,
+    setIsLoadingDataAssessmentPemeriksaanLab,
   ] = useState(false);
   const [
-    isUpdatingDataAssessmentPasienLab,
-    setIsUpdatingDataAssessmentPasienLab,
+    isUpdatingDataAssessmentPemeriksaanLab,
+    setIsUpdatingDataAssessmentPemeriksaanLab,
   ] = useState(false);
   const [sortedData, setSortedData] = useState([]);
-  const initDataAssessmentPasienLab = async () => {
+  const initDataAssessmentPemeriksaanLab = async () => {
     try {
-      setIsLoadingDataAssessmentPasienLab(true);
+      setIsLoadingDataAssessmentPemeriksaanLab(true);
       const params = {
-        per_page: dataAssessmentPasienLabPerPage,
+        per_page: dataAssessmentPemeriksaanLabPerPage,
       };
-      const response = await getListAsesmenPasienLab(params);
-      const result = dataAssessmentPasienLabFormatHandler(response.data.data);
+      const response = await getListAsesmenPemeriksaanLab(params);
+      const result = dataAssessmentPemeriksaanLabFormatHandler(response.data.data);
       // setDataPermintaanRadiologi(result);
-      setDataMetaAssessmentPasienLab(response.data.meta);
+      setDataMetaAssessmentPemeriksaanLab(response.data.meta);
     } catch (error) {
       console.log(error);
     } finally {
-      setIsLoadingDataAssessmentPasienLab(false);
+      setIsLoadingDataAssessmentPemeriksaanLab(false);
     }
   };
 
-  const updateDataAssessmentPasienLabHandler = async (payload) => {
+  const updateDataAssessmentPemeriksaanLabHandler = async (payload) => {
     try {
-      setIsUpdatingDataAssessmentPasienLab(true);
-      const response = await getListAsesmenPasienLab(payload);
-      const result = dataAssessmentPasienLabFormatHandler(response.data.data);
+      setIsUpdatingDataAssessmentPemeriksaanLab(true);
+      const response = await getListAsesmenPemeriksaanLab(payload);
+      const result = dataAssessmentPemeriksaanLabFormatHandler(response.data.data);
       // setDataPermintaanLab(result);
-      setDataMetaAssessmentPasienLab(response.data.meta);
+      setDataMetaAssessmentPemeriksaanLab(response.data.meta);
     } catch (error) {
       console.log(error);
       setSnackbarState({
@@ -84,14 +84,14 @@ const FormAssessmentPasien = ({
         message: error.message,
       });
     } finally {
-      setIsUpdatingDataAssessmentPasienLab(false);
+      setIsUpdatingDataAssessmentPemeriksaanLab(false);
     }
   };
 
   // ASSESSMENT PASIEN 
-  const [dataAssessmentPasienLab, setDataAssessmentPasienLab] = useState({});
-  const [dataMetaAssessmentPasienLab, setDataMetaAssessmentPasienLab] = useState({});
-  const [detailDatAssessmentPasienLab, setDetailDataAssessmentPasienLab] = useState(
+  const [dataAssessmentPemeriksaanLab, setDataAssessmentPemeriksaanLab] = useState({});
+  const [dataMetaAssessmentPemeriksaanLab, setDataMetaAssessmentPemeriksaanLab] = useState({});
+  const [detailDatAssessmentPemeriksaanLab, setDetailDataAssessmentPemeriksaanLab] = useState(
     {}
   );
 
@@ -101,7 +101,7 @@ const FormAssessmentPasien = ({
 
   // const handleConfirm = () => {
   //   if (confirmAction === "save") {
-  //     AssessmentPasienValidation.handleSubmit()
+  //     AssessmentPemerikasaanValidation.handleSubmit()
   //       .then(() => {
   //         // Submission was successful
   //         setSnackbarMessage("Data berhasil disimpan.");
@@ -134,7 +134,7 @@ const FormAssessmentPasien = ({
     if (confirmAction === "save") {
 
       console.log("Saving data...");
-      AssessmentPasienValidation.handleSubmit();
+      AssessmentPemerikasaanValidation.handleSubmit();
     } else if (confirmAction === "cancel") {
 
       console.log("Canceling action...");
@@ -142,40 +142,45 @@ const FormAssessmentPasien = ({
     handleCloseDialog();
   };
 
-  const AssessmentPasienInitialValues = !isEditType
+  const AssessmentPemerikasaanInitialValues = !isEditType
   ?  {
-    no_wa: "",
-    email: "",
-    tanggal_pengambilan: null,
-    waktu_pemeriksaan: null,
+    nama_pemeriksaan: "",
+    tarif_pemeriksaan: "",
+    // diambil: null,
+    jenis_pemeriksaan: { name: "", value: "" },
+    // status_kehamilan:{ name: "", value: "" },
+    // waktu_pemeriksaan: null,
   }: prePopulatedDataForm;
 
-  const AssessmentPasienSchema = Yup.object({
-    no_wa: phoneNumberSchema(),
-    email: Yup.string().email("Email tidak valid"),
-    tanggal_pengambilan: dateSchema("Tanggal Pengambilan"),
-    waktu_pemeriksaan: dateSchema("Waktu Pemeriksaan"),
+  const AssessmentPemerikasaanSchema = Yup.object({
+    nama_pemeriksaan: Yup.string(),
+    tarif_pemeriksaan: Yup.string(),
+    jenis_pemeriksaan: Yup.object({
+        value: stringSchema("Jenis Pemeriksaan", true),
+      }),
+    // diambil: dateSchema("Tanggal Pengambilan"),
+    // waktu_pemeriksaan: dateSchema("Waktu Pemeriksaan"),
   });
 
-  const AssessmentPasienValidation = useFormik({
-    initialValues: AssessmentPasienInitialValues,
-    validationSchema: AssessmentPasienSchema,
+  const AssessmentPemerikasaanValidation = useFormik({
+    initialValues: AssessmentPemerikasaanInitialValues,
+    validationSchema: AssessmentPemerikasaanSchema,
     enableReinitialize: true,
     onSubmit: async (values, { resetForm }) => {
       let messageContext = isEditType ? "diperbarui" : "ditambahkan";
       let data = {
-        no_wa: values.no_wa,
-        email: values.email,
+        nama_pemeriksaan: values.nama_pemeriksaan,
+        tarif_pemeriksaan: values.tarif_pemeriksaan,
         diambil: formatIsoToGen(values.diambil),
         waktu_pemeriksaan: formatIsoToGen(values.waktu_pemeriksaan),
       };
       try {
         if (!isEditType) {
-          await createAsesmenPasienLab(data);
+          await createAsesmenPemeriksaanLab(data);
           resetForm();
         } else {
-          await updateAsesmenPasienLab({ ...data, id: detailPrePopulatedData.id });
-          const response = await getDetailAsesmenPasienLab({
+          await updateAsesmenPemeriksaanLab({ ...data, id: detailPrePopulatedData.id });
+          const response = await getDetailAsesmenPemeriksaanLab({
             id: detailPrePopulatedData.id,
           });
           updatePrePopulatedData({ ...response.data.data });
@@ -183,7 +188,7 @@ const FormAssessmentPasien = ({
         setSnackbar({
           state: true,
           type: "success",
-          message: `"Assessment Pasien berhasil ${messageContext}!`,
+          message: `"Assessment Pemerikasaan berhasil ${messageContext}!`,
         });
       } catch (error) {
         if (Object.keys(error.errorValidationObj).length >= 1) {
@@ -194,21 +199,15 @@ const FormAssessmentPasien = ({
         setSnackbar({
           state: true,
           type: "error",
-          message: `Terjadi kesalahan, Assessment Pasien gagal ${messageContext}!`,
+          message: `Terjadi kesalahan, Assessment Pemerikasaan gagal ${messageContext}!`,
         });
       }
     },
   });
 
-
-
-  
   return (
     <Grid container spacing={2}>
-      <Grid container justifyContent="flex-end" spacing={2} sx={{ marginTop: "12px", marginRight: "12px" }}>
-        
-
-        {/* tombol edit */}
+      <Grid container justifyContent="flex-end" spacing={2} sx={{ marginTop: "12px", marginRight: "200px" }}>
         <FormControlLabel control={ <Grid item>
           <Switch
             checked={isEditingMode}
@@ -219,6 +218,7 @@ const FormAssessmentPasien = ({
             Edit Data
           </Switch>
         </Grid>}>
+
         </FormControlLabel>
        
       </Grid>
@@ -232,41 +232,38 @@ const FormAssessmentPasien = ({
             opacity: isEditingMode ? 1 : 0.5,
           }}
         >
-          <form onSubmit={AssessmentPasienValidation.handleSubmit}>
+          <form onSubmit={AssessmentPemerikasaanValidation.handleSubmit}>
             <div className="mb-16">
               <TextField
                 fullWidth
-                id="no_wa"
-                name="no_wa"
-                label="No. WhatsApp"
-                value={AssessmentPasienValidation.values.noWhatsapp}
-                onChange={AssessmentPasienValidation.handleChange}
-                error={AssessmentPasienValidation.touched.noWhatsapp && Boolean(AssessmentPasienValidation.errors.noWhatsapp)}
-                helperText={AssessmentPasienValidation.touched.noWhatsapp && AssessmentPasienValidation.errors.noWhatsapp}
+                id="nama_pemeriksaan"
+                name="nama_pemeriksaan"
+                label="Nama pemeriksaan"
+                value={AssessmentPemerikasaanValidation.values.namaPemeriksaan}
+                onChange={AssessmentPemerikasaanValidation.handleChange}
+                error={AssessmentPemerikasaanValidation.touched.namaPemeriksaan && Boolean(AssessmentPemerikasaanValidation.errors.namaPemeriksaan)}
+                helperText={AssessmentPemerikasaanValidation.touched.namaPemeriksaan && AssessmentPemerikasaanValidation.errors.namaPemeriksaan}
                 disabled={!isEditingMode}
               />
             </div>
             <div className="mb-16">
-              <TextField
-                fullWidth
-                id="email"
-                name="email"
-                label="Email"
-                value={AssessmentPasienValidation.values.email}
-                onChange={AssessmentPasienValidation.handleChange}
-                error={AssessmentPasienValidation.touched.email && Boolean(AssessmentPasienValidation.errors.email)}
-                helperText={AssessmentPasienValidation.touched.email && AssessmentPasienValidation.errors.email}
-                disabled={!isEditingMode}
-              />
+            <SelectStatic
+                  id="jenis_pemeriksaan"
+                  handlerRef={AssessmentPemerikasaanValidation}
+                  label="Jenis Pemeriksaan"
+                  options={statusAlergi}
+                  disabled={!isEditingMode}
+                />
             </div>
-            <div className="mb-16">
+
+            {/* <div className="mb-16">
               <DateTimePickerComp
                 id="diambil"
                 label="Tanggal Diambil"
-                handlerRef={AssessmentPasienValidation}
+                handlerRef={AssessmentPemerikasaanValidation}
                 disabled={!isEditingMode}
               />
-            </div>
+            </div> */}
           </form>
         </Paper>
       </Grid>
@@ -279,33 +276,37 @@ const FormAssessmentPasien = ({
             mt: "16px", // Add margin-top for spacing
           }}
         >
-          <form onSubmit={AssessmentPasienValidation.handleSubmit}>
-            {/* <div className="mb-16">
-            <SelectStatic
-                  id="status_alergi"
-                  handlerRef={AssessmentPasienValidation}
-                  label="Status Alergi"
-                  options={statusAlergi}
-                  disabled={!isEditingMode}
-                />
-            </div> */}
+          <form onSubmit={AssessmentPemerikasaanValidation.handleSubmit}>
+          <div className="mb-16">
+              <TextField
+                fullWidth
+                id="tarif_pemeriksaan"
+                name="tarif_pemeriksaan"
+                label="Tarif Pemeriksaan"
+                value={AssessmentPemerikasaanValidation.values.tarif_pemeriksaan}
+                onChange={AssessmentPemerikasaanValidation.handleChange}
+                error={AssessmentPemerikasaanValidation.touched.tarif_pemeriksaan && Boolean(AssessmentPemerikasaanValidation.errors.tarif_pemeriksaan)}
+                helperText={AssessmentPemerikasaanValidation.touched.tarif_pemeriksaan && AssessmentPemerikasaanValidation.errors.tarif_pemeriksaan}
+                disabled={!isEditingMode}
+              />
+            </div>
             {/* <div className="mb-16">
             <SelectStatic
                   id="status_kehamilan"
-                  handlerRef={AssessmentPasienValidation}
+                  handlerRef={AssessmentPemerikasaanValidation}
                   label="Status Kehamilan"
                   options={statusKehamilan}
                   disabled={!isEditingMode}
                 />
-            </div> */}
+            </div>
             <div className="mb-16">
               <DateTimePickerComp
                 id="waktu_pemeriksaan"
                 label="Waktu Pemeriksaan"
-                handlerRef={AssessmentPasienValidation}
+                handlerRef={AssessmentPemerikasaanValidation}
                 disabled={!isEditingMode}
               />
-            </div>
+            </div> */}
           </form>
 
         </Paper>
@@ -328,7 +329,7 @@ const FormAssessmentPasien = ({
               type="button"
               variant="contained"
               startIcon={<SaveIcon />}
-              loading={AssessmentPasienValidation.isSubmitting}
+              loading={AssessmentPemerikasaanValidation.isSubmitting}
               onClick={() => handleOpenDialog("save")}
               disabled={!isEditingMode || !isActionPermitted("asesmenpasienradiologi:store")}
             >
@@ -338,8 +339,8 @@ const FormAssessmentPasien = ({
         </Grid>
         <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
           <DialogContent>
-            {confirmAction === "save" && <p>Simpan data Assessment Pasien?</p>}
-            {confirmAction === "cancel" && <p>Batal mengubah data Assessment Pasien?</p>}
+            {confirmAction === "save" && <p>Simpan data Assessment Pemerikasaan?</p>}
+            {confirmAction === "cancel" && <p>Batal mengubah data Assessment Pemerikasaan?</p>}
           </DialogContent>
           <DialogActions>
             <Button onClick={handleCloseDialog} color="primary">
@@ -362,4 +363,4 @@ const FormAssessmentPasien = ({
   );
 };
 
-export default FormAssessmentPasien;
+export default FormAssessmentPemeriksaan;

@@ -20,6 +20,7 @@ import useClientPermission from "custom-hooks/useClientPermission";
 import { formatLabelDate } from "utils/formatTime";
 import { Grid, Card, IconButton, Tooltip, Avatar, Dialog } from "@mui/material";
 import PermContactCalendarIcon from "@mui/icons-material/PermContactCalendar";
+import FormTranfusi from "components/modules/laboratorium/formTranfusiDarah";
 import FormExpertise from "components/modules/laboratorium/formExpertise";
 import RiwayatPemeriksaanTable from "components/modules/laboratorium/riwayatPemeriksaanTable";
 import Assessment from "components/modules/laboratorium/assessment";
@@ -304,36 +305,25 @@ const DetailLaboratorium = () => {
     }
   }, [router.isReady, slug]);
 
-  const menuItems = [
-    {
-      label: "Permintaan Laboratorium",
-      component: (
-        <>
-          <PermintaanLaboratoriumTableLayout
-            tableHead={permintaanTableHead}
-            data={dataPermintaanLaboratorium}
-          ></PermintaanLaboratoriumTableLayout>
-        </>
-      ),
-    },
-    {
-      label: "Assessment Pemeriksaan",
-      component: (
-        <Assessment
-          namaPemeriksaan={
-            dataPermintaanLaboratorium.permintaan?.[0]?.nama_pemeriksaan
-          }
-          jenisPemeriksaan={
-            dataPermintaanLaboratorium.permintaan?.[0]?.jenis_pemeriksaan
-          }
-        />
-      ),
-    },
-    { label: "Hasil Pemeriksaan", component: <FormExpertise /> },
-    { label: "Riwayat Pemeriksaan", component: <RiwayatPemeriksaanTable /> },
-  ];
+  // const menuItems = [
+  //   {
+  //     label: "Assessment Pemeriksaan",
+  //     component: (
+  //       <Assessment
+  //         namaPemeriksaan={
+  //           dataPermintaanLaboratorium.permintaan?.[0]?.nama_pemeriksaan
+  //         }
+  //         jenisPemeriksaan={
+  //           dataPermintaanLaboratorium.permintaan?.[0]?.jenis_pemeriksaan
+  //         }
+  //       />
+  //     ),
+  //   },
+  //   { label: "Hasil Pemeriksaan", component: <FormExpertise /> },
+  //   { label: "Riwayat Pemeriksaan", component: <RiwayatPemeriksaanTable /> },
+  // ];
 
-  const [selectedTab, setSelectedTab] = useState(0);
+  // const [selectedTab, setSelectedTab] = useState(0);
 
   return (
     <>
@@ -343,7 +333,7 @@ const DetailLaboratorium = () => {
         <>
           <Grid container spacing={2}>
             <Grid item md={6} sm={12}>
-              <Card className="px-14 py-12 mb-16">
+              <Card className="px-14 py-12 mb-0">
                 <div className="flex justify-between items-center mb-16">
                   <div className="flex items-center">
                     <PermContactCalendarIcon
@@ -425,14 +415,14 @@ const DetailLaboratorium = () => {
           </Grid>
           
           <Tabs
-            value={selectedTab}
+            // value={selectedTab}
             onChange={(event, newValue) => setSelectedTab(newValue)}
             variant="scrollable"
             scrollButtons="auto"
             aria-label="Sub-menu"
-            sx={{ marginBottom: "16px" }} // Add spacing below the tabs
+            sx={{ marginBottom: "-18px" }} // Add spacing below the tabs
           >
-            {menuItems.map((item, index) => (
+            {/* {menuItems.map((item, index) => (
               <Tab
                 key={index}
                 label={item.label}
@@ -442,9 +432,18 @@ const DetailLaboratorium = () => {
                   marginRight: "16px", // Add spacing between tabs
                 }}
               />
-            ))}
+            ))} */}
           </Tabs>
-          <Card
+          <h2 className="color-grey-text mt-0">Form Tranfusi Darah</h2>
+          <Card sx={{
+            border: "0px solid #e0e0e0",
+            borderTop: "0px",
+            borderRadius: "0px"}}>
+          
+          <FormTranfusi/>
+
+          </Card>
+          {/* <Card
             sx={{
               border: "1px solid #e0e0e0",
               borderTop: "none",
@@ -453,7 +452,7 @@ const DetailLaboratorium = () => {
             }}
           >
             {menuItems[selectedTab].component}
-          </Card>
+          </Card> */}
         </>
       )}
       

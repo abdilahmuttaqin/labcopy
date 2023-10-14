@@ -11,7 +11,7 @@ import {
   Box,
 } from "@mui/material";
 
-const PermintaanRadiologiTableLayout = ({ tableHead, data }) => {
+const PermintaanLaboratoriumTableLayout = ({ tableHead, data }) => {
   // Mengecek apakah data adalah array dan tidak kosong
   const isDataValid = Array.isArray(data) && data.length > 0;
 
@@ -73,4 +73,4 @@ const PermintaanRadiologiTableLayout = ({ tableHead, data }) => {
   );
 };
 
-export default PermintaanRadiologiTableLayout;
+export default PermintaanLaboratoriumTableLayout;

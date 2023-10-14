@@ -5,8 +5,8 @@ import TableLayoutGudang from 'components/TableLayoutGudang';
 import LoaderOnLayout from 'components/LoaderOnLayout';
 import Snackbar from 'components/SnackbarMui';
 import {formatReadable} from 'utils/formatTime';
-import * as XLSX from 'xlsx';
-import {saveAs} from 'file-saver';
+// import * as XLSX from 'xlsx';
+// import {saveAs} from 'file-saver';
 import {Button} from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
 
