@@ -4,7 +4,7 @@ import request from "utils/request";
 //Antrian Laboratorium
 export function getListLaboratorium(params) {
   return request({
-    url: `${process.env.NEXT_PUBLIC_MOCK_BASE_URL}/pasienlab`,
+    url: `${process.env.NEXT_PUBLIC_GATEWAY_BASE_URL}/rs-service/permintaanlab`,
     method: "GET",
     params,
   });
@@ -12,7 +12,7 @@ export function getListLaboratorium(params) {
 
 export function getDetailPasienLab(params) {
   return request({
-    url: `${process.env.NEXT_PUBLIC_MOCK_BASE_URL}/pasienlab/show`,
+    url: `${process.env.NEXT_PUBLIC_GATEWAY_BASE_URL}/rs-service/permintaanlab/show`,
     method: "GET",
     params,
   });
