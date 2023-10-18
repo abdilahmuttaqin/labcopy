@@ -84,22 +84,22 @@ const Laboratorium = () => {
   const [isLoadingDataLaboratorium, setIsLoadingDataLaboratorium] = useState(false);
   const [isUpdatingDataLaboratorium, setIsUpdatingDataLaboratorium] = useState(false);
 
-  const initDataPasien = async () => {
-    try {
-      setIsLoadingDataPasien(true);
-      const params = {
-        per_page: dataPasienPerPage,
-      };
-      const response = await getListPasien(params);
-      const result = dataPasienFormatHandler(response.data.data);
-      setDataPasien(result);
-      setDataMetaPasien(response.data.meta);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoadingDataPasien(false);
-    }
-  };
+  // const initDataPasien = async () => {
+  //   try {
+  //     setIsLoadingDataPasien(true);
+  //     const params = {
+  //       per_page: dataPasienPerPage,
+  //     };
+  //     const response = await getListPasien(params);
+  //     const result = dataPasienFormatHandler(response.data.data);
+  //     setDataPasien(result);
+  //     setDataMetaPasien(response.data.meta);
+  //   } catch (error) {
+  //     console.log(error);
+  //   } finally {
+  //     setIsLoadingDataPasien(false);
+  //   }
+  // };
   
   const initDataLaboratorium = async () => {
     try {
@@ -198,7 +198,7 @@ const Laboratorium = () => {
 
   useEffect(() => {
     initDataLaboratorium();
-    initDataPasien();
+    // initDataPasien();
   }, []);
   return (
     <>

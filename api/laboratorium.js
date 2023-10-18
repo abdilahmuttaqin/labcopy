@@ -1,7 +1,7 @@
 // utils/api/laboratorium.js
 import request from "utils/request";
 
-//Antrian Laboratorium
+//Permintaan Pemeriksaan Laboratorium
 export function getListLaboratorium(params) {
   return request({
     url: `${process.env.NEXT_PUBLIC_GATEWAY_BASE_URL}/rs-service/permintaanlab`,
@@ -10,7 +10,7 @@ export function getListLaboratorium(params) {
   });
 }
 
-export function getDetailPasienLab(params) {
+export function getDetailLaboratorium(params) {
   return request({
     url: `${process.env.NEXT_PUBLIC_GATEWAY_BASE_URL}/rs-service/permintaanlab/show`,
     method: "GET",
@@ -26,11 +26,11 @@ export function searchLaboratorium(params) {
   });
 }
 
-export function showLaboratorium(params) {
+export function deleteLaboratorium(data) {
   return request({
-    url: `${process.env.NEXT_PUBLIC_GATEWAY_BASE_URL}/rs-service/permintaanlab/show`,
-    method: "GET",
-    params,
+    url: `${process.env.NEXT_PUBLIC_GATEWAY_BASE_URL}/rs-service/permintaanlab`,
+    method: "DELETE",
+    data,
   });
 }
 

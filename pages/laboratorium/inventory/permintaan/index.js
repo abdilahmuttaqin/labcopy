@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { getListPermintaanBarangLab, updatePermintaanBarangLab, deletePermintaanBarangLab, searchPermintaanBarangLab } from "api/laboratorium";
+import { getListPermintaanBarangLab, deletePermintaanBarangLab, searchPermintaanBarangLab } from "api/laboratorium";
 import TableLayout from "components/TableLayout";
 import Spinner from "components/SpinnerMui";
 import Snackbar from "components/SnackbarMui";
@@ -89,7 +89,7 @@ const PermintaanLab = () => {
     const deletaDataPermintaanLabHandler = async (payload) => {
       try {
         setIsUpdatingDataPermintaanLab(true);
-        const response = await deletePermintaanLab({ id: payload });
+        const response = await deletePermintaanBarangLab({ id: payload });
         setSnackbarState({
           state: true,
           type: "success",
@@ -110,7 +110,7 @@ const PermintaanLab = () => {
     const searchDataPermintaanLabHandler = async (payload) => {
       try {
         setIsUpdatingDataPermintaanLab(true);
-        const response = await searchPermintaanLab({
+        const response = await searchPermintaanBarangLab({
           search: payload,
           per_page: dataPermintaanLabPerPage,
         });

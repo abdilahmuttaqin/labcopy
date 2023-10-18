@@ -6,7 +6,7 @@ import {
   getDetailAsesmenPemeriksaanLaboratorium,
   getDetailGroupingPemeriksaanLaboratorium,
   getDetailPermintaanPemeriksaanLaboratorium,
-  getDetailPasienLab,
+  getDetailLaboratorium,
 } from "api/laboratorium";
 import LoaderOnLayout from "components/LoaderOnLayout";
 import FormPasien from "components/modules/pasien/form";
@@ -34,14 +34,14 @@ const permintaanTableHead = [
     id: "waktu_permintaan_pemeriksaan",
     label: "Waktu Permintaan",
   },
-  {
-    id: "nama_pemeriksaan",
-    label: "Nama Pemeriksaan",
-  },
-  {
-    id: "jenis_pemeriksaan",
-    label: "Jenis Pemeriksaan",
-  },
+  // {
+  //   id: "nama_pemeriksaan",
+  //   label: "Nama Pemeriksaan",
+  // },
+  // {
+  //   id: "jenis_pemeriksaan",
+  //   label: "Jenis Pemeriksaan",
+  // },
   {
     id: "dokter_pengirim",
     label: "Dokter Pengirim",
@@ -68,8 +68,8 @@ const dataPermintaanLaboratoriumFormatHandler = (
     return {
       nomor_pemeriksaan: e.nomor_pemeriksaan || "null",
       waktu_permintaan_pemeriksaan: e.waktu_permintaan_pemeriksaan || "null",
-      nama_pemeriksaan: namaPemeriksaan || "null",
-      jenis_pemeriksaan: jenisPemeriksaan || "null",
+      // nama_pemeriksaan: namaPemeriksaan || "null",
+      // jenis_pemeriksaan: jenisPemeriksaan || "null",
       dokter_pengirim: e.dokter_pengirim || "null",
       unit_pengirim: e.unit_pengirim || "null",
       diagonsa_kerja: e.diagonsa_kerja || "null",
@@ -243,7 +243,7 @@ const DetailLaboratorium = () => {
     if (router.isReady) {
       (async () => {
         try {
-          const responseAntriandetail = await getDetailPasienLab({ id: slug[0] });
+          const responseAntriandetail = await getDetailLaboratorium({ id: slug[0] });
           const dataAntriandetail = responseAntriandetail.data.data;
           setDetailDataAntrianLaboratorium(dataAntriandetail);
           const noAntrian = dataAntriandetail[0].no_antrian;
@@ -362,19 +362,19 @@ const DetailLaboratorium = () => {
                     />
                     <div className="ml-8 mt-8">
                       <div className="font-w-700">
-                        {dataPasien?.nama_pasien}
+                        {dataPasien?.pasien.nama_pasien}
                       </div>
                       <div>
                         {detailDataPasien?.tanggal_lahir
-                          ? formatLabelDate(detailDataPasien.tanggal_lahir)
+                          ? formatLabelDate(detailDataPasien.pasien.tanggal_lahir)
                           : ""}{" "}
-                        / {detailDataPasien?.umur} tahun
+                        / {detailDataPasien?.pasien.umur} tahun
                       </div>
                       <div>
-                        {detailDataPasien?.jenis_kelamin
+                        {detailDataPasien?.pasien.jenis_kelamin
                           ? "Laki-laki"
                           : "Perempuan"}{" "}
-                        / {detailDataPasien?.status}
+                        / {detailDataPasien?.pasien.status}
                       </div>
                     </div>
                   </div>
@@ -384,7 +384,7 @@ const DetailLaboratorium = () => {
                       className="font-28 font-w-700"
                       style={{ textAlign: "right" }}
                     >
-                      {detailDataPasien?.no_rm}
+                      {detailDataPasien?.pasien.no_rm}
                     </div>
                   </div>
                 </div>
