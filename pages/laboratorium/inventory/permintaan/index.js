@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { getListPermintaanLab, deletePermintaanLab, searchPermintaanLab } from "api/laboratorium";
+import { getListPermintaanBarangLab, updatePermintaanBarangLab, deletePermintaanBarangLab, searchPermintaanBarangLab } from "api/laboratorium";
 import TableLayout from "components/TableLayout";
 import Spinner from "components/SpinnerMui";
 import Snackbar from "components/SnackbarMui";
@@ -56,7 +56,7 @@ const PermintaanLab = () => {
         const params = {
           per_page: dataPermintaanLabPerPage,
         };
-        const response = await getListPermintaanLab(params);
+        const response = await getListPermintaanBarangLab(params);
         const result = dataPermintaanLabFormatHandler(response.data.data);
         setDataPermintaanLab(result);
         setDataMetaPermintaanLab(response.data.meta);
@@ -70,7 +70,7 @@ const PermintaanLab = () => {
     const updateDataPermintaanLabHandler = async (payload) => {
       try {
         setIsUpdatingDataPermintaanLab(true);
-        const response = await getListPermintaanLab(payload);
+        const response = await getListPermintaanBarangLab(payload);
         const result = dataPermintaanLabFormatHandler(response.data.data);
         setDataPermintaanLab(result);
         setDataMetaPermintaanLab(response.data.meta);
@@ -124,7 +124,7 @@ const PermintaanLab = () => {
             type: "warning",
             message: `${payload} tidak ditemukan`,
           });
-          const response = await getListPermintaanLab({
+          const response = await getListPermintaanBarangLab({
             per_page: dataPermintaanLabPerPage,
           });
           const result = dataPermintaanLabFormatHandler(response.data.data);

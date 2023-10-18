@@ -4,7 +4,7 @@ import LoaderOnLayout from "components/LoaderOnLayout";
 import FormPermintaanLab from "components/modules/laboratorium/formPermintaanLab";
 import { formatGenToIso } from "utils/formatTime";
 import getStaticData from "utils/getStaticData";
-import { getDetailPermintaanLab } from "api/radiologi";
+import { getDetailPermintaanBarangLab } from "api/laboratorium";
 
 const DetailPermintaanLab = () => {
   const router = useRouter();
@@ -31,7 +31,7 @@ const DetailPermintaanLab = () => {
     if (router.isReady) {
       (async () => {
         try {
-          const response = await getDetailPermintaanLab({ id: slug[0] });
+          const response = await getDetailPermintaanBarangLab({ id: slug[0] });
           const data = response.data.data;
           const formattedData = dataFormatter(data);
           setDataPermintaanLab(formattedData);

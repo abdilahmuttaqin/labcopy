@@ -77,7 +77,7 @@ export function updateinventoryLaboratorium(data) {
 }
 
 //Permintaan Barang Laboratorium
-export function getListPermintaanLab(params) {
+export function getListPermintaanBarangLab(params) {
   return request({
     url: `${process.env.NEXT_PUBLIC_GATEWAY_BASE_URL}/rs-service/baranglab`,
     method: "GET",
@@ -85,7 +85,15 @@ export function getListPermintaanLab(params) {
   });
 }
 
-export function createPermintaanLab(data) {
+export function getDetailPermintaanBarangLab(params) {
+  return request({
+    url: `${process.env.NEXT_PUBLIC_GATEWAY_BASE_URL}/rs-service/baranglab/show`,
+    method: "GET",
+    params,
+  });
+}
+
+export function createPermintaanBarangLab(data) {
   return request({
     url: `${process.env.NEXT_PUBLIC_GATEWAY_BASE_URL}/rs-service/baranglab`,
     method: "POST",
@@ -93,15 +101,23 @@ export function createPermintaanLab(data) {
   });
 }
 
-export function deletePermintaanLab(data) {
+export function updatePermintaanBarangLab(data) {
   return request({
-    url: `${process.env.NEXT_PUBLIC_MOCK_BASE_URL}/rs-service/baranglab`,
+    url: `${process.env.NEXT_PUBLIC_GATEWAY_BASE_URL}/rs-service/baranglab`,
+    method: "PATCH",
+    data,
+  });
+}
+
+export function deletePermintaanBarangLab(data) {
+  return request({
+    url: `${process.env.NEXT_PUBLIC_GATEWAY_BASE_URL}/rs-service/baranglab`,
     method: "DELETE",
     data,
   });
 }
 
-export function searchPermintaanLab(params) {
+export function searchPermintaanBarangLab(params) {
   return request({
     url: `${process.env.NEXT_PUBLIC_MOCK_BASE_URL}/rs-service/baranglab/search`,
     method: "GET",

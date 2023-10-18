@@ -16,7 +16,7 @@ import Snackbar from "components/SnackbarMui";
 import { formatIsoToGen } from "utils/formatTime";
 import { dateSchema, stringSchema, phoneNumberSchema } from "utils/yupSchema";
 import useClientPermission from "custom-hooks/useClientPermission";
-import { createPermintaanLab, updatePermintaanLab, getDetailPermintaanLab } from "api/laboratorium";
+import { createPermintaanBarangLab, updatePermintaanBarangLab, getDetailPermintaanBarangLab } from "api/laboratorium";
 
 const FormPermintaanLab = ({
   isEditType = false,
@@ -68,11 +68,11 @@ const FormPermintaanLab = ({
       
       try {
         if (!isEditType) {
-          await createPermintaanLab(data);
+          await createPermintaanBarangLab(data);
           resetForm();
         } else {
-          await updatePermintaanLab({ ...data, id: detailPrePopulatedData.id });
-          const response = await getDetailPermintaanLab({
+          await updatePermintaanBarangLab({ ...data, id: detailPrePopulatedData.id });
+          const response = await getDetailPermintaanBarangLab({
             id: detailPrePopulatedData.id,
           });
           updatePrePopulatedData({ ...response.data.data });
@@ -188,7 +188,7 @@ const FormPermintaanLab = ({
                 startIcon={<PlusIcon />}
                 loadingPosition="start"
                 loading={PermintaanLabValidation.isSubmitting}
-                onClick={() => router.push("/laboratorium/inventory/permintaan")}
+                // onClick={() => router.push("/laboratorium/inventory/permintaan")}
               >
                 Tambah Permintaan
               </LoadingButton>
