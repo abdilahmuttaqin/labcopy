@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import {
-  getListLaboratorium,
-  deleteLaboratorium,
-  searchLaboratorium,
+  getListTransfusiDarah,
+  deleteTransfusiDarah,
+  searchTransfusiDarah,
 } from "api/laboratorium";
 import TableLayout from "components/TableLayout";
 import TableLayoutPasienLab from "components/TableLayoutPasienLab";
@@ -11,14 +11,14 @@ import LoaderOnLayout from "components/LoaderOnLayout";
 import Snackbar from "components/SnackbarMui";
 import { getListPasien } from "api/pasien";
 
-const laboratoriumTableHead = [
-  {
-    id: "status_pasien",
-    label: "Status Pasien",
-  },
+const TransfusiDarahTableHead = [
   {
     id: "nama",
     label: "Nama Pasien",
+  },
+  {
+    id: "status_pasien",
+    label: "Status Pasien",
   },
   {
     id: "umur",
@@ -34,19 +34,19 @@ const laboratoriumTableHead = [
   },
   {
     id: "tgl_permintaan",
-    label: "Prioritas",
+    label: "Tanggal Permintaan",
   },
   {
     id: "gol_darah",
     label: "Golongan Darah",
   },
   {
-    id: "komponen_darah",
+    id: "komponen",
     label: "Komponen Darah yang Diminta",
   },
 ];
 
-const dataLaboratoriumFormatHandler = (payload) => {
+const dataTransfusiDarahFormatHandler = (payload) => {
   const result = payload.map((e) => {
     return {
       status_pasien: e.status_pasien || "null",
@@ -56,15 +56,15 @@ const dataLaboratoriumFormatHandler = (payload) => {
       alamat: e.alamat || "null",
       tgl: e.tgl_permintaan || "null",
       gol_darah: e.gol_darah || "null",
-      komponen_darah: e.komponen_darah || "null",
+      komponen: e.komponen || "null",
       id: e.id,
     };
   });
-  result.sort((a, b) => parseInt(a.antrian) - parseInt(b.antrian));
+  // result.sort((a, b) => parseInt(a.antrian) - parseInt(b.antrian));
   return result;
 };
 
-const Laboratorium = () => {
+const TransfusiDarah = () => {
   const [dataPasien, setDataPasien] = useState([]);
   const [dataMetaPasien, setDataMetaPasien] = useState({});
   const [isLoadingDataPasien, setIsLoadingDataPasien] = useState(false);
@@ -78,11 +78,11 @@ const Laboratorium = () => {
   const [activeContent, setActiveContent] = useState(1);
 
   // pasien --general state
-  const [dataLaboratorium, setDataLaboratorium] = useState([]);
-  const [dataMetaLaboratorium, setDataMetaPermintaanLaboratorium ] = useState({});
-  const [dataLaboratoriumPerPage, setDataPerPage] = useState(8);
-  const [isLoadingDataLaboratorium, setIsLoadingDataLaboratorium] = useState(false);
-  const [isUpdatingDataLaboratorium, setIsUpdatingDataLaboratorium] = useState(false);
+  const [dataTransfusiDarah, setDataTransfusiDarah] = useState([]);
+  const [dataMetaTransfusiDarah, setDataMetaPermintaanTransfusiDarah ] = useState({});
+  const [dataTransfusiDarahPerPage, setDataPerPage] = useState(8);
+  const [isLoadingDataTransfusiDarah, setIsLoadingDataTransfusiDarah] = useState(false);
+  const [isUpdatingDataTransfusiDarah, setIsUpdatingDataTransfusiDarah] = useState(false);
 
   const initDataPasien = async () => {
     try {
@@ -101,29 +101,29 @@ const Laboratorium = () => {
     }
   };
   
-  const initDataLaboratorium = async () => {
+  const initDataTransfusiDarah = async () => {
     try {
-      setIsLoadingDataLaboratorium(true);
+      setIsLoadingDataTransfusiDarah(true);
       const params = {
-        per_page: dataLaboratoriumPerPage,
+        per_page: dataTransfusiDarahPerPage,
       };
-      const response = await getListLaboratorium(params);
-      const result = dataLaboratoriumFormatHandler(response.data.data);
-      setDataLaboratorium(result);
-      setDataMetaPermintaanLaboratorium(response.data.meta);
+      const response = await getListTransfusiDarah(params);
+      const result = dataTransfusiDarahFormatHandler(response.data.data);
+      setDataTransfusiDarah(result);
+      setDataMetaPermintaanTransfusiDarah(response.data.meta);
     } catch (error) {
       console.log(error);
     } finally {
-      setIsLoadingDataLaboratorium(false);
+      setIsLoadingDataTransfusiDarah(false);
     }
   };
-  const updateDataLaboratoriumHandler = async (payload) => {
+  const updateDataTransfusiDarahHandler = async (payload) => {
     try {
-      setIsUpdatingDataLaboratorium(true);
-      const response = await getListLaboratorium(payload);
-      const result = dataLaboratoriumFormatHandler(response.data.data);
-      setDataLaboratorium(result);
-      setDataMetaPermintaanLaboratorium(response.data.meta);
+      setIsUpdatingDataTransfusiDarah(true);
+      const response = await getListTransfusiDarah(payload);
+      const result = dataTransfusiDarahFormatHandler(response.data.data);
+      setDataTransfusiDarah(result);
+      setDataMetaPermintaanTransfusiDarah(response.data.meta);
     } catch (error) {
       console.log(error);
       setSnackbarState({
@@ -132,19 +132,19 @@ const Laboratorium = () => {
         message: error.message,
       });
     } finally {
-      setIsUpdatingDataLaboratorium(false);
+      setIsUpdatingDataTransfusiDarah(false);
     }
   };
-  const deletaDataLaboratoriumHandler = async (payload) => {
+  const deletaDataTransfusiDarahHandler = async (payload) => {
     try {
-      setIsUpdatingDataLaboratorium(true);
-      const response = await deleteLaboratorium({ id: payload });
+      setIsUpdatingDataTransfusiDarah(true);
+      const response = await deleteTransfusiDarah({ id: payload });
       setSnackbarState({
         state: true,
         type: "success",
         message: response.data.message,
       });
-      updateDataLaboratoriumHandler({ per_page: dataLaboratoriumPerPage });
+      updateDataTransfusiDarahHandler({ per_page: dataTransfusiDarahPerPage });
     } catch (error) {
       setSnackbarState({
         state: true,
@@ -152,33 +152,33 @@ const Laboratorium = () => {
         message: error.message,
       });
     } finally {
-      setIsUpdatingDataLaboratorium(false);
+      setIsUpdatingDataTransfusiDarah(false);
     }
   };
-  const searchDataLaboratoriumHandler = async (payload) => {
+  const searchDataTransfusiDarahHandler = async (payload) => {
     try {
-      setIsUpdatingDataLaboratorium(true);
-      const response = await searchLaboratorium({
+      setIsUpdatingDataTransfusiDarah(true);
+      const response = await searchTransfusiDarah({
         search_text: payload.map((e) => e.value),
         search_column: payload.map((e) => e.type),
-        per_page: dataLaboratoriumPerPage,
+        per_page: dataTransfusiDarahPerPage,
       });
       if (response.data.data.length !== 0) {
-        const result = dataLaboratoriumFormatHandler(response.data.data);
-        setDataLaboratorium(result);
-        setDataMetaPermintaanLaboratorium(response.data.meta);
+        const result = dataTransfusiDarahFormatHandler(response.data.data);
+        setDataTransfusiDarah(result);
+        setDataMetaPermintaanTransfusiDarah(response.data.meta);
       } else {
         setSnackbarState({
           state: true,
           type: "warning",
           message: `${payload} tidak ditemukan`,
         });
-        const response = await getListLaboratorium({
-          per_page: dataLaboratoriumPerPage,
+        const response = await getListTransfusiDarah({
+          per_page: dataTransfusiDarahPerPage,
         });
-        const result = dataLaboratoriumFormatHandler(response.data.data);
-        setDataLaboratorium(result);
-        setDataMetaPermintaanLaboratorium(response.data.meta);
+        const result = dataTransfusiDarahFormatHandler(response.data.data);
+        setDataTransfusiDarah(result);
+        setDataMetaPermintaanTransfusiDarah(response.data.meta);
       }
     } catch (error) {
       setSnackbarState({
@@ -187,7 +187,7 @@ const Laboratorium = () => {
         message: error.message,
       });
     } finally {
-      setIsUpdatingDataLaboratorium(false);
+      setIsUpdatingDataTransfusiDarah(false);
     }
   };
   useEffect(() => {
@@ -197,42 +197,42 @@ const Laboratorium = () => {
   }, [router]);
 
   useEffect(() => {
-    initDataLaboratorium();
+    initDataTransfusiDarah();
     initDataPasien();
   }, []);
   return (
     <>
-      {isLoadingDataLaboratorium ? (
+      {isLoadingDataTransfusiDarah ? (
         <LoaderOnLayout />
       ) : (
         <>
           <TableLayoutPasienLab
             baseRoutePath={`${router.asPath}`}
             title="Tranfusi Darah"
-            tableHead={laboratoriumTableHead}
-            data={dataLaboratorium}
-            meta={dataMetaLaboratorium}
-            dataPerPage={dataLaboratoriumPerPage}
-            isUpdatingData={isUpdatingDataLaboratorium}
+            tableHead={TransfusiDarahTableHead}
+            data={dataTransfusiDarah}
+            meta={dataMetaTransfusiDarah}
+            dataPerPage={dataTransfusiDarahPerPage}
+            isUpdatingData={isUpdatingDataTransfusiDarah}
             filterOptions={[
               { label: "Tipe Jaminan", value: "asuransi" },
               { label: "Tanggal", value: "date" },
             ]}
             updateDataPerPage={(e) => {
               setDataPerPage(e.target.value);
-              updateDataLaboratoriumHandler({ per_page: e.target.value });
+              updateDataTransfusiDarahHandler({ per_page: e.target.value });
             }}
             updateDataNavigate={(payload) =>
-              updateDataLaboratoriumHandler({
-                per_page: dataLaboratoriumPerPage,
+              updateDataTransfusiDarahHandler({
+                per_page: dataTransfusiDarahPerPage,
                 cursor: payload,
               })
             }
             refreshData={() =>
-              updateDataLaboratoriumHandler({ per_page: dataLaboratoriumPerPage })
+              updateDataTransfusiDarahHandler({ per_page: dataTransfusiDarahPerPage })
             }
-            deleteData={deletaDataLaboratoriumHandler}
-            searchData={searchDataLaboratoriumHandler}
+            deleteData={deletaDataTransfusiDarahHandler}
+            searchData={searchDataTransfusiDarahHandler}
           />
         </>
       )}
@@ -254,4 +254,4 @@ const Laboratorium = () => {
   );
 };
 
-export default Laboratorium;
+export default TransfusiDarah;

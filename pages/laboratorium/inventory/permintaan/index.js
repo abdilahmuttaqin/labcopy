@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { getListPermintaanLab, deletePermintaanLab, searchPermintaanLab } from "api/radiologi";
+import { getListPermintaanLab, deletePermintaanLab, searchPermintaanLab } from "api/laboratorium";
 import TableLayout from "components/TableLayout";
 import Spinner from "components/SpinnerMui";
 import Snackbar from "components/SnackbarMui";
@@ -19,7 +19,7 @@ const PermintaanLabTableHead = [
         label: "Jumlah Barang",
     },
     {
-        id: "tgl_permintaan",
+        id: "tanggal_permintaan",
         label: "Tanggal Permintaan",
     },
 ];
@@ -29,7 +29,7 @@ const dataPermintaanLabFormatHandler = (payload) => {
         return {
             nama_barang: e.nama_barang || "null",
             jumlah_barang: e.jumlah_barang || "null",
-            tgl_permintaan: e.tgl_permintaan || "null",
+            tanggal_permintaan: e.tanggal_permintaan || "null",
             id: e.id,
         };
     });

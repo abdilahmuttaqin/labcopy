@@ -36,14 +36,14 @@ const FormPermintaanLab = ({
     ? {
       nama_barang: "",
       jumlah_barang: "",
-      tgl_permintaan: null,
+      // tanggal_permintaan: null,
     }
     : prePopulatedDataForm;
 
   const PermintaanLabschema = Yup.object({
     nama_barang: stringSchema("Nama Barang", true),
     jumlah_barang: stringSchema("Jumlah Barang", true),
-    tgl_permintaan: dateSchema("Tanggal Permintaan")
+    // tanggal_permintaan: dateSchema("Tanggal Permintaan")
   });
 
   const PermintaanLabValidation = useFormik({
@@ -56,7 +56,7 @@ const FormPermintaanLab = ({
       let data = {
         nama_barang: values.nama_barang,
         jumlah_barang: values.jumlah_barang,
-        tgl_permintaan: formatIsoToGen(values.tgl_permintaan),
+        // tanggal_permintaan: formatIsoToGen(values.tanggal_permintaan),
       };
 
       // let validData = {};
@@ -146,13 +146,13 @@ const FormPermintaanLab = ({
                   }
                 />
               </div>
-              <div className="mb-16">
+              {/* <div className="mb-16">
                 <DatePicker
                   id="tgl_permintaan"
                   label="Tanggal Permintaan *"
                   handlerRef={PermintaanLabValidation}
                 />
-              </div>
+              </div> */}
             </Grid>
           </Grid>
           <div className="mt-16 flex justify-end items-center">
@@ -161,7 +161,7 @@ const FormPermintaanLab = ({
               variant="outlined"
               startIcon={<BackIcon />}
               sx={{ marginRight: 2 }}
-              onClick={() => router.push("/permintaanlab")}
+              onClick={() => router.push("/laboratorium/inventory/permintaan")}
             >
               Kembali
             </Button>
@@ -172,7 +172,7 @@ const FormPermintaanLab = ({
                 disabled={
                   JSON.stringify(PermintaanLabValidation.initialValues) ===
                   JSON.stringify(PermintaanLabValidation.values) ||
-                  !isActionPermitted("permintaanlab:update")
+                  !isActionPermitted("baranglab:update")
                 }
                 startIcon={<SaveIcon />}
                 loadingPosition="start"
@@ -184,10 +184,11 @@ const FormPermintaanLab = ({
               <LoadingButton
                 type="submit"
                 variant="contained"
-                disabled={!isActionPermitted("permintaanlab:store")}
+                disabled={!isActionPermitted("baranglab:store")}
                 startIcon={<PlusIcon />}
                 loadingPosition="start"
                 loading={PermintaanLabValidation.isSubmitting}
+                onClick={() => router.push("/laboratorium/inventory/permintaan")}
               >
                 Tambah Permintaan
               </LoadingButton>

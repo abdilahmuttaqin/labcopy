@@ -173,7 +173,7 @@ let SideList = [
       {
         name: "Tranfusi Darah",
         permission: ["laboratorium:all"],
-        routePath: "/laboratorium/tranfusi",
+        routePath: "/laboratorium/",
       },
 
     ],
