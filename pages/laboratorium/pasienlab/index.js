@@ -37,11 +37,11 @@ const laboratoriumTableHead = [
     label: "Prioritas",
   },
   {
-    id: "unit",
+    id: "unit_pengirim",
     label: "Unit",
   },
   {
-    id: "dokter",
+    id: "dokter_pengirim",
     label: "Dokter",
   },
 ];
@@ -55,8 +55,8 @@ const dataLaboratoriumFormatHandler = (payload) => {
       alamat: e.alamat || "null",
       asuransi: e.tipe_jaminan || "null",
       prioritas: e.prioritas || "null",
-      unit: e.unit || "null",
-      dokter: e.dokter || "null",
+      unit_pengirim: e.unit_pengirim || "null",
+      dokter_pengirim: e.dokter_pengirim || "null",
       id: e.id,
     };
   });

@@ -34,10 +34,19 @@ export function showLaboratorium(params) {
   });
 }
 
+// Permintaan Tranfusi Darah
+export function getListTransfusiDarah(params) {
+  return request({
+    url: `${process.env.NEXT_PUBLIC_GATEWAY_BASE_URL}/rs-service/transfusidarah`,
+    method: "GET",
+    params,
+  });
+}
+
 //inventory Laboratorium
 export function getListinventoryLaboratorium(params) {
   return request({
-    url: `${process.env.NEXT_PUBLIC_MOCK_BASE_URL}/rs-service/inventorylaboratorium`,
+    url: `${process.env.NEXT_PUBLIC_GATEWAY_BASE_URL}/rs-service/inventorylab`,
     method: "GET",
     params,
   });
@@ -67,9 +76,18 @@ export function updateinventoryLaboratorium(data) {
   });
 }
 
+//Permintaan Barang Laboratorium
+export function getListPermintaanLab(params) {
+  return request({
+    url: `${process.env.NEXT_PUBLIC_GATEWAY_BASE_URL}/rs-service/baranglab`,
+    method: "GET",
+    params,
+  });
+}
+
 export function createPermintaanLab(data) {
   return request({
-    url: `${process.env.NEXT_PUBLIC_MOCK_BASE_URL}/rs-service/permintaanlab`,
+    url: `${process.env.NEXT_PUBLIC_GATEWAY_BASE_URL}/rs-service/baranglab`,
     method: "POST",
     data,
   });
@@ -77,7 +95,7 @@ export function createPermintaanLab(data) {
 
 export function deletePermintaanLab(data) {
   return request({
-    url: `${process.env.NEXT_PUBLIC_MOCK_BASE_URL}/rs-service/permintaanlab`,
+    url: `${process.env.NEXT_PUBLIC_MOCK_BASE_URL}/rs-service/baranglab`,
     method: "DELETE",
     data,
   });
@@ -85,7 +103,7 @@ export function deletePermintaanLab(data) {
 
 export function searchPermintaanLab(params) {
   return request({
-    url: `${process.env.NEXT_PUBLIC_MOCK_BASE_URL}/rs-service/permintaanlab/search`,
+    url: `${process.env.NEXT_PUBLIC_MOCK_BASE_URL}/rs-service/baranglab/search`,
     method: "GET",
     params,
   });

@@ -141,7 +141,7 @@ const DetailLaboratorium = () => {
       const params = {
         per_page: dataPermintaanLaboratoriumPerPage,
       };
-      const response = await getListPermintaanLaboratorium(params);
+      const response = await getListLaboratorium(params);
       const result = dataPermintaanLaboratoriumFormatHandler(response.data.data);
       setDataPermintaanLaboratorium(result);
       setDataMetaPermintaanLaboratorium(response.data.meta);
@@ -412,7 +412,7 @@ const DetailLaboratorium = () => {
                         {detailDataPasien?.tanggal_lahir
                           ? formatLabelDate(detailDataPasien.tanggal_lahir)
                           : ""}{" "}
-                      <span style={{ fontWeight: 'bold' }}>Rp</span>{detailDataPasien?.umur}
+                      <span style={{ fontWeight: 'bold' }}>Rp</span>{detailDataPasien?.pasien}
                       </div>
                     </div>
                   </div>

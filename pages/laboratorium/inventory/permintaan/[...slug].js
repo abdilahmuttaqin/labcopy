@@ -17,7 +17,7 @@ const DetailPermintaanLab = () => {
     let tempData = {
       nama_barang: data.nama_barang || "",
       jumlah_barang: data.jumlah_barang || "",
-      tgl_permintaan: formatGenToIso(data.tgl_permintaan),
+      tanggal_permintaan: formatGenToIso(data.tanggal_permintaan),
     };
     return { ...tempData };
   };
