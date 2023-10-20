@@ -109,22 +109,22 @@ export function searchPermintaanLab(params) {
   });
 }
 
-//Permintaan Pemeriksaan Laboratorium
-export function getListPermintaanPemeriksaanLaboratorium(params) {
-  return request({
-    url: `${process.env.NEXT_PUBLIC_MOCK_BASE_URL}/rs-service/permintaanlab`,
-    method: "GET",
-    params,
-  });
-}
+// Permintaan Pemeriksaan Laboratorium
+// export function getListPermintaanPemeriksaanLaboratorium(params) {
+//   return request({
+//     url: `${process.env.NEXT_PUBLIC_MOCK_BASE_URL}/rs-service/permintaanlab`,
+//     method: "GET",
+//     params,
+//   });
+// }
 
-export function getDetailPermintaanPemeriksaanLaboratorium(params) {
-  return request({
-    url: `${process.env.NEXT_PUBLIC_MOCK_BASE_URL}/rs-service/permintaanlab/show`,
-    method: "GET",
-    params,
-  });
-}
+// export function getDetailPermintaanPemeriksaanLaboratorium(params) {
+//   return request({
+//     url: `${process.env.NEXT_PUBLIC_MOCK_BASE_URL}/rs-service/permintaanlab/show`,
+//     method: "GET",
+//     params,
+//   });
+// }
 
 //Hasil Pemeriksaan Laboratorium
 export function getListHasilPemeriksaanLaboratorium(params) {
