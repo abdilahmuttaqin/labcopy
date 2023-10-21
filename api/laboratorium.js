@@ -119,7 +119,7 @@ export function deletePermintaanBarangLab(data) {
 
 export function searchPermintaanBarangLab(params) {
   return request({
-    url: `${process.env.NEXT_PUBLIC_MOCK_BASE_URL}/rs-service/baranglab/search`,
+    url: `${process.env.NEXT_PUBLIC_GATEWAY_BASE_URL}/rs-service/baranglab/search`,
     method: "GET",
     params,
   });
