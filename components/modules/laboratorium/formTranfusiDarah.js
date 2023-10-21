@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, forwardRef, useRef } from "react";
 import { useRouter } from "next/router";
 import { useFormik } from "formik";
 import { FocusError } from "focus-formik-error";
@@ -18,9 +18,59 @@ import DatePicker from "components/DatePicker";
 import { stringSchema, dateSchema } from "utils/yupSchema";
 import { createSuster, updateSuster, getDetailSuster } from "api/suster";
 import { getListOptionEmployee } from "api/employee";
-import { statusPPA, statusAktif } from "public/static/data";
+import { golDarah } from "public/static/data";
+import { rh } from "public/static/data";
+import { cara_pembayaran } from "public/static/data";
 import { formatIsoToGen } from "utils/formatTime";
 import useClientPermission from "custom-hooks/useClientPermission";
+import ReactToPrint from "react-to-print";
+import PrintIcon from "@mui/icons-material/Print";
+
+
+const CheckupToPrint = forwardRef(function CheckupToPrint({ data }, ref) {
+  return (
+    <div ref={ref} className="printableContent">
+  <div className="w-full">
+    <div className="flex items-center justify-center">
+      <img src="/icons/logo.png" alt="logo-rsmp" width={80} height={80} className="w-full" />
+      <div>
+        <div className="font-w-700">RSU MITRA PARAMEDIKA</div>
+        <div className="font-12">
+          Jl. Raya Ngemplak, Kemasan, Widodomartani, Ngemplak, Sleman, Yogyakarta
+        </div>
+        <div className="font-12">Telp: (0274) 4461098. Email: rsumitraparamedika@yahoo.co.id</div>
+        <div className="font-12">Website: rsumitraparamedika.co.id</div>
+      </div>
+      <img src="/icons/kars.jpg" alt="logo-kars" width={80} height={80} className="w-full" />
+    </div>
+  </div>
+
+  <hr></hr>
+  <center><div className="font-w-600">HASIL PEMERIKSAAN RADIOLOGI</div></center>
+      <div className="flex p-4" style={{ display: "flex", justifyContent: "space-between" }}>
+        <div className="column">
+          <div>No. Pemeriksaan: {data.no_pemeriksaan || "-"}</div>
+          <div>No. RM: {data.no_rm || "-"}</div>
+          <div>Nama Pasien: {data.nama_pasien || "-"}</div>
+          <div>Tanggal Lahir: {data.tanggal_lahir || "-"}</div>
+          <div>Umur: {data.umur || "-"}</div>
+        </div>
+        <div className="column">
+          <div>Tanggal Pemeriksaan: {data.tanggal_pemeriksaan || "-"}</div>
+          <div>Diagnosa: {data.diagnosis_kerja || "-"}</div>
+          <div>Nama Pemeriksaan: {data.namaPemeriksaan || "-"}</div>
+          <div>Jenis Pemeriksaan: {data.jenis_pemeriksaan || "-"}</div>
+          <div>Dokter Pengirim: {data.dokter || "-"}</div>
+          <div>Pelayanan: {data.poli || "-"}</div>
+        </div>
+      </div>
+      <div>Hasil Expertise: {data.hasil_expertise || "-"}</div>
+
+
+</div>
+
+  );
+});
 
 const FormTranfusi = ({
   isEditType = false,
@@ -30,48 +80,65 @@ const FormTranfusi = ({
 }) => {
   const router = useRouter();
   const { isActionPermitted } = useClientPermission();
+  const checkupPrintRef = useRef();
   const [snackbar, setSnackbar] = useState({
     state: false,
     type: null,
     message: "",
   });
 
-  const susterInitialValue = !isEditType
+  const tranfusiInitialValue = !isEditType
     ? {
-        employee_id: { id: "", name: "" },
-        status_aktif: { name: "", value: "" },
-        no_str: "",
-        tgl_expired_str: null,
-        status_ppa: { name: "", value: "" },
+        status_pasien: "",
+        pmi_rujukan: "",
+        alamat:"",
+        tgl_permintaan: null,
+        gol_darah: { name: "", value: "" },
+        rh: { name: "", value: "" },
+        komponen_yang_diminta:"",
+        jumlah_yang_diminta:"",
+        cara_pembayaran: { name: "", value: ""},
+        keterangan:""
       }
     : prePopulatedDataForm;
 
-  const susterSchema = Yup.object({
-    employee_id: Yup.object({
-      id: stringSchema("Karyawan", true),
+  const tranfusiSchema = Yup.object({
+    status_pasien: stringSchema("Status Pasien", true),
+    pmi_rujukan: stringSchema("PMI Rujukan", true),
+    alamat: stringSchema("PMI Rujukan", true),
+    tgl_permintaan: dateSchema("Tanggal Permintaan"),
+    gol_darah: Yup.object({
+      value: stringSchema("Pilih Golongan Darah", true),
     }),
-    status_aktif: Yup.object({
-      value: Yup.boolean("Pilih status").required("Status wajib diisi"),
+    rh: Yup.object({
+      value: Yup.boolean("Pilih RH").required("RH wajib diisi"),
     }),
-    no_str: stringSchema("Nomor STR", true),
-    tgl_expired_str: dateSchema("Tanggal kadaluarsa STR"),
-    status_ppa: Yup.object({
-      value: stringSchema("Status PPA", true),
+    komponen_yang_diminta: stringSchema("Komponen Yang Diminta", true),
+    jumlah_yang_diminta: stringSchema("Jumlah Yang Diminta", true),
+    cara_pembayaran: Yup.object({
+      value: Yup.boolean("Pilih Pembayaran").required("Cara Pembayaran wajib diisi"),
     }),
+    keterangan: stringSchema("Keterangan", true)
   });
 
-  const susterValidation = useFormik({
-    initialValues: susterInitialValue,
-    validationSchema: susterSchema,
+  const tranfusiValidation = useFormik({
+    initialValues: tranfusiInitialValue,
+    validationSchema: tranfusiSchema,
     enableReinitialize: true,
     onSubmit: async (values, { resetForm }) => {
       let messageContext = isEditType ? "diperbarui" : "ditambahkan";
       let data = {
-        employee_id: values.employee_id.id,
-        status_aktif: values.status_aktif.value,
-        no_str: values.no_str,
-        tgl_expired_str: formatIsoToGen(values.tgl_expired_str),
-        status_ppa: values.status_ppa.value,
+        status_pasien: values.status_pasien,
+        pmi_rujukan: values.pmi_rujukan,
+        alamat,
+        tgl_permintaan: formatIsoToGen(values.tgl_permintaan),
+        gol_darah: values.gol_darah.value,
+        rh,
+        komponen_yang_diminta: values.komponen_yang_diminta,
+        jumlah_yang_diminta: values.jumlah_yang_diminta,
+        cara_pembayaran: values.cara_pembayaran,
+        keterangan: values.keterangan
+  
       };
       try {
         if (!isEditType) {
@@ -102,79 +169,155 @@ const FormTranfusi = ({
 
   return (
     <>
-      <Paper sx={{ width: "100%", padding: 2, paddingTop: 3 }}>
-        <form onSubmit={susterValidation.handleSubmit}>
-          <FocusError formik={susterValidation} />
-          <Grid container spacing={2}>
-            <Grid item xs={12} md={4}>
-              <div className="mb-16">
-                <SelectAsync
-                  id="employee_id"
-                  labelField="Karyawan"
-                  labelOptionRef="name"
-                  labelOptionSecondRef="id"
-                  valueOptionRef="id"
-                  handlerRef={susterValidation}
-                  handlerFetchData={getListOptionEmployee}
-                  handlerOnChange={(value) => {
-                    if (value) {
-                      susterValidation.setFieldValue("employee_id", value);
-                    } else {
-                      susterValidation.setFieldValue("employee_id", {
-                        id: "",
-                        name: "",
-                      });
-                    }
-                  }}
-                />
-              </div>
-              <div className="mb-16">
-                <SelectStatic
-                  id="status_aktif"
-                  handlerRef={susterValidation}
-                  label="Status"
-                  options={statusAktif}
-                />
-              </div>
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <div className="mb-16">
+      <Paper sx={{ width: "100%", padding: 3, paddingTop: 3 }}>
+        <form onSubmit={tranfusiValidation.handleSubmit}>
+          <FocusError formik={tranfusiValidation} />
+          <div className="mb-16">
                 <TextField
                   fullWidth
-                  id="no_str"
-                  name="no_str"
-                  label="Nomor STR"
-                  value={susterValidation.values.no_str}
-                  onChange={susterValidation.handleChange}
+                  id="status_pasien"
+                  name="status_pasien"
+                  label="Status Pasien"
+                  value={tranfusiValidation.values.status_pasien}
+                  onChange={tranfusiValidation.handleChange}
                   error={
-                    susterValidation.touched.no_str &&
-                    Boolean(susterValidation.errors.no_str)
+                    tranfusiValidation.touched.status_pasien &&
+                    Boolean(tranfusiValidation.errors.status_pasien)
                   }
                   helperText={
-                    susterValidation.touched.no_str &&
-                    susterValidation.errors.no_str
+                    tranfusiValidation.touched.status_pasien &&
+                    tranfusiValidation.errors.status_pasien
                   }
                 />
-              </div>
-              <div className="mb-16">
+            </div>
+            <div className="mb-16">
+                <TextField
+                  fullWidth
+                  id="pmi_rujukan"
+                  name="pmi_rujukan"
+                  label="PMI Rujukan"
+                  value={tranfusiValidation.values.pmi_rujukan}
+                  onChange={tranfusiValidation.handleChange}
+                  error={
+                    tranfusiValidation.touched.pmi_rujukan &&
+                    Boolean(tranfusiValidation.errors.pmi_rujukan)
+                  }
+                  helperText={
+                    tranfusiValidation.touched.pmi_rujukan &&
+                    tranfusiValidation.errors.pmi_rujukan
+                  }
+                />
+            </div>
+            <div className="mb-16">
+                <TextField
+                  fullWidth
+                  id="alamat"
+                  name="alamat"
+                  label="Alamat"
+                  value={tranfusiValidation.values.alamat}
+                  onChange={tranfusiValidation.handleChange}
+                  error={
+                    tranfusiValidation.touched.alamat &&
+                    Boolean(tranfusiValidation.errors.alamat)
+                  }
+                  helperText={
+                    tranfusiValidation.touched.alamat &&
+                    tranfusiValidation.errors.alamat
+                  }
+                />
+            </div>
+            <div className="mb-16">
                 <DatePicker
-                  id="tgl_expired_str"
-                  label="Tanggal kadaluarsa STR"
-                  handlerRef={susterValidation}
+                  id="tgl_permintaan"
+                  label="Tanggal Permintaan"
+                  handlerRef={tranfusiValidation}
                 />
               </div>
-            </Grid>
-            <Grid item xs={12} md={4}>
+            <Grid container spacing={2}>
+              <Grid item xs={6}>
               <div className="mb-16">
                 <SelectStatic
-                  id="status_ppa"
-                  handlerRef={susterValidation}
-                  label="Status PPA"
-                  options={statusPPA}
+                  id="gol_darah"
+                  handlerRef={tranfusiValidation}
+                  label="Gol Darah"
+                  options={golDarah}
                 />
               </div>
+              </Grid>
+              <Grid item xs={6}>
+              <div className="mb-16">
+                <SelectStatic
+                  id="rh"
+                  handlerRef={tranfusiValidation}
+                  label="RH"
+                  options={rh}
+                />
+              </div>
+              </Grid>
             </Grid>
-          </Grid>
+            <div className="mb-16">
+                <TextField
+                  fullWidth
+                  id="komponen_darah_yang_diminta"
+                  name="komponen_darah_yang_diminta"
+                  label="Komponen Darah Yang Diminta"
+                  value={tranfusiValidation.values.komponen_darah_yang_diminta}
+                  onChange={tranfusiValidation.handleChange}
+                  error={
+                    tranfusiValidation.touched.komponen_darah_yang_diminta &&
+                    Boolean(tranfusiValidation.errors.komponen_darah_yang_diminta)
+                  }
+                  helperText={
+                    tranfusiValidation.touched.komponen_darah_yang_diminta &&
+                    tranfusiValidation.errors.komponen_darah_yang_diminta
+                  }
+                />
+            </div>
+            <div className="mb-16">
+                <TextField
+                  fullWidth
+                  id="jumlah_yang_diminta"
+                  name="jumlah_yang_diminta"
+                  label="Jumlah Yang Diminta"
+                  value={tranfusiValidation.values.jumlah_yang_diminta}
+                  onChange={tranfusiValidation.handleChange}
+                  error={
+                    tranfusiValidation.touched.jumlah_yang_diminta &&
+                    Boolean(tranfusiValidation.errors.jumlah_yang_diminta)
+                  }
+                  helperText={
+                    tranfusiValidation.touched.jumlah_yang_diminta &&
+                    tranfusiValidation.errors.jumlah_yang_diminta
+                  }
+                />
+            </div>
+            <div className="mb-16">
+                <SelectStatic
+                  id="cara_pembayaran"
+                  handlerRef={tranfusiValidation}
+                  label="Cara Pembayaran"
+                  options={cara_pembayaran}
+                />
+              </div>
+            <div className="mb-16">
+                <TextField
+                  fullWidth
+                  id="keterangan"
+                  name="keterangan"
+                  label="Keterangan"
+                  value={tranfusiValidation.values.keterangan}
+                  onChange={tranfusiValidation.handleChange}
+                  error={
+                    tranfusiValidation.touched.keterangan &&
+                    Boolean(tranfusiValidation.errors.keterangan)
+                  }
+                  helperText={
+                    tranfusiValidation.touched.keterangan &&
+                    tranfusiValidation.errors.keterangan
+                  }
+                />
+            </div>
+
           <div className="mt-16 flex justify-end items-center">
             <Button
               type="button"
@@ -185,33 +328,30 @@ const FormTranfusi = ({
             >
               Kembali
             </Button>
-            {isEditType ? (
-              <LoadingButton
-                type="submit"
-                variant="contained"
-                disabled={
-                  JSON.stringify(susterValidation.initialValues) ===
-                    JSON.stringify(susterValidation.values) ||
-                  !isActionPermitted("suster:update")
-                }
-                startIcon={<SaveIcon />}
-                loadingPosition="start"
-                loading={susterValidation.isSubmitting}
-              >
-                Simpan perubahan
-              </LoadingButton>
-            ) : (
-              <LoadingButton
-                type="submit"
-                variant="contained"
-                disabled={!isActionPermitted("suster:store")}
-                startIcon={<PlusIcon />}
-                loadingPosition="start"
-                loading={susterValidation.isSubmitting}
-              >
-                Tambah Perawat
-              </LoadingButton>
-            )}
+
+              <ReactToPrint
+                trigger={() => (
+                  <Button variant="outlined" startIcon={<PrintIcon />}>
+                    EXPORT HASIL
+                  </Button>
+                )}
+                content={() => checkupPrintRef.current}
+              /><CheckupToPrint
+                data={{
+                  no_pemeriksaan: detailPrePopulatedData.no_pemeriksaan,
+                  no_rm: detailPrePopulatedData.no_rm,
+                  nama_pasien: detailPrePopulatedData.nama_pasien,
+                  tanggal_lahir: detailPrePopulatedData.tanggal_lahir,
+                  umur: detailPrePopulatedData.umur,
+                  tanggal_pemeriksaan: detailPrePopulatedData.tanggal_pemeriksaan,
+                  diagnosis_kerja: detailPrePopulatedData.diagnosis_kerja,
+                  nama_pemeriksaan: detailPrePopulatedData.nama_pemeriksaan,
+                  jenis_pemeriksaan: detailPrePopulatedData.jenis_pemeriksaan,
+                  dokter_pengirim: detailPrePopulatedData.dokter_pengirim,
+                  poli: detailPrePopulatedData.poli,
+                }}
+                ref={checkupPrintRef}
+              />
           </div>
         </form>
       </Paper>
