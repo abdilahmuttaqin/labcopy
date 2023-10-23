@@ -27,7 +27,7 @@ import PermintaanLaboratoriumTableLayout from "components/modules/laboratorium/p
 
 const permintaanTableHead = [
   {
-    id: "nomor_pemeriksaan",
+    id: "no_pemeriksaan",
     label: "No. Pemeriksaan",
   },
   {
@@ -61,18 +61,18 @@ const permintaanTableHead = [
 ];
 const dataPermintaanLaboratoriumFormatHandler = (
   payload,
-  namaPemeriksaan,
-  jenisPemeriksaan
+  // namaPemeriksaan,
+  // jenisPemeriksaan
 ) => {
   const result = payload.map((e) => {
     return {
-      nomor_pemeriksaan: e.nomor_pemeriksaan || "null",
+      no_pemeriksaan: e.no_pemeriksaan || "null",
       waktu_permintaan_pemeriksaan: e.waktu_permintaan_pemeriksaan || "null",
       // nama_pemeriksaan: namaPemeriksaan || "null",
       // jenis_pemeriksaan: jenisPemeriksaan || "null",
       dokter_pengirim: e.dokter_pengirim || "null",
       unit_pengirim: e.unit_pengirim || "null",
-      diagonsa_kerja: e.diagonsa_kerja || "null",
+      diagnosis_kerja: e.diagnosis_kerja || "null",
       catatan_permintaan: e.catatan_permintaan || "null",
       id: e.id,
     };
@@ -157,7 +157,7 @@ const DetailLaboratorium = () => {
       setIsUpdatingDataPermintaanLaboratorium(true);
       const response = await getListEmployee(payload);
       const result = dataPermintaanLaboratoriumFormatHandler(response.data.data);
-      // setDataPermintaanLaboratorium(result);
+      setDataPermintaanLaboratorium(result);
       setDataMetaPermintaanLaboratorium(response.data.meta);
     } catch (error) {
       console.log(error);
@@ -362,19 +362,19 @@ const DetailLaboratorium = () => {
                     />
                     <div className="ml-8 mt-8">
                       <div className="font-w-700">
-                        {dataPasien?.pasien.nama_pasien}
+                        {dataPasien?.nama_pasien}
                       </div>
                       <div>
                         {detailDataPasien?.tanggal_lahir
-                          ? formatLabelDate(detailDataPasien.pasien.tanggal_lahir)
+                          ? formatLabelDate(detailDataPasien.tanggal_lahir)
                           : ""}{" "}
-                        / {detailDataPasien?.pasien.umur} tahun
+                        / {detailDataPasien?.umur} tahun
                       </div>
                       <div>
-                        {detailDataPasien?.pasien.jenis_kelamin
+                        {detailDataPasien?.jenis_kelamin
                           ? "Laki-laki"
                           : "Perempuan"}{" "}
-                        / {detailDataPasien?.pasien.status}
+                        / {detailDataPasien?.status}
                       </div>
                     </div>
                   </div>
@@ -384,7 +384,7 @@ const DetailLaboratorium = () => {
                       className="font-28 font-w-700"
                       style={{ textAlign: "right" }}
                     >
-                      {detailDataPasien?.pasien.no_rm}
+                      {detailDataPasien?.no_rm}
                     </div>
                   </div>
                 </div>

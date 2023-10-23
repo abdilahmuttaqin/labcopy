@@ -29,10 +29,6 @@ const TransfusiDarahTableHead = [
     label: "No Rekam Medis",
   },
   {
-    id: "alamat",
-    label: "Alamat",
-  },
-  {
     id: "tgl_permintaan",
     label: "Tanggal Permintaan",
   },
@@ -49,11 +45,10 @@ const TransfusiDarahTableHead = [
 const dataTransfusiDarahFormatHandler = (payload) => {
   const result = payload.map((e) => {
     return {
-      status_pasien: e.status_pasien || "null",
-      nama: e.nama || "null",
-      umur: e.umur || "null",
-      no_rm: e.no_rm || "null",
-      alamat: e.alamat || "null",
+      nama: e.pasien.nama_pasien || "null",
+      status_pasien: e.asuransi.name || "null",
+      umur: e.pasien.umur || "",
+      no_rm: e.pasien.no_rm || "null",
       tgl: e.tgl_permintaan || "null",
       gol_darah: e.gol_darah || "null",
       komponen: e.komponen || "null",

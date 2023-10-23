@@ -25,15 +25,11 @@ const laboratoriumTableHead = [
     label: "Nama Pasien",
   },
   {
-    id: "alamat",
-    label: "Alamat",
-  },
-  {
     id: "tipe_jaminan",
     label: "Tipe jaminan",
   },
   {
-    id: "prioritas_id",
+    id: "prioritas",
     label: "Prioritas",
   },
   {
@@ -50,12 +46,11 @@ const dataLaboratoriumFormatHandler = (payload) => {
   const result = payload.map((e) => {
     return {
       antrian: e.no_antrian || "null",
-      no_rm: e.no_rm || "null",
-      nama: e.nama || "null",
-      alamat: e.alamat || "null",
-      asuransi: e.tipe_jaminan || "null",
-      prioritas_id: e.prioritas_id || "null",
-      unit_pengirim: e.unit_pengirim || "null",
+      no_rm: e.pasien.no_rm || "null",
+      nama: e.pasien.nama_pasien || "null",
+      asuransi: e.asuransi.name || "null",
+      prioritas: e.prioritas || "null",
+      unit_pengirim: e.unit.name || "null",
       dokter_pengirim: e.dokter_pengirim || "null",
       id: e.id,
     };
@@ -84,22 +79,22 @@ const Laboratorium = () => {
   const [isLoadingDataLaboratorium, setIsLoadingDataLaboratorium] = useState(false);
   const [isUpdatingDataLaboratorium, setIsUpdatingDataLaboratorium] = useState(false);
 
-  // const initDataPasien = async () => {
-  //   try {
-  //     setIsLoadingDataPasien(true);
-  //     const params = {
-  //       per_page: dataPasienPerPage,
-  //     };
-  //     const response = await getListPasien(params);
-  //     const result = dataPasienFormatHandler(response.data.data);
-  //     setDataPasien(result);
-  //     setDataMetaPasien(response.data.meta);
-  //   } catch (error) {
-  //     console.log(error);
-  //   } finally {
-  //     setIsLoadingDataPasien(false);
-  //   }
-  // };
+  const initDataPasien = async () => {
+    try {
+      setIsLoadingDataPasien(true);
+      const params = {
+        per_page: dataPasienPerPage,
+      };
+      const response = await getListLaboratorium(params);
+      const result = dataPasienFormatHandler(response.data.data);
+      setDataPasien(result);
+      setDataMetaPasien(response.data.meta);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoadingDataPasien(false);
+    }
+  };
   
   const initDataLaboratorium = async () => {
     try {
@@ -198,7 +193,7 @@ const Laboratorium = () => {
 
   useEffect(() => {
     initDataLaboratorium();
-    // initDataPasien();
+    initDataPasien();
   }, []);
   return (
     <>
