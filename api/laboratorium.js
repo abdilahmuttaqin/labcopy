@@ -42,6 +42,20 @@ export function getListTransfusiDarah(params) {
     params,
   });
 }
+export function getDetailTransfusiDarah(params) {
+  return request({
+    url: `${process.env.NEXT_PUBLIC_GATEWAY_BASE_URL}/rs-service/transfusidarah/show`,
+    method: "GET",
+    params,
+  });
+}
+export function updateTranfusiDarah(params) {
+  return request({
+    url: `${process.env.NEXT_PUBLIC_GATEWAY_BASE_URL}/rs-service/transfusidarah/show`,
+    method: "GET",
+    params,
+  });
+}
 
 //inventory Laboratorium
 export function getListinventoryLaboratorium(params) {
@@ -128,7 +142,7 @@ export function searchPermintaanBarangLab(params) {
 //Permintaan Pemeriksaan Laboratorium
 export function getListPermintaanPemeriksaanLaboratorium(params) {
   return request({
-    url: `${process.env.NEXT_PUBLIC_MOCK_BASE_URL}/rs-service/permintaanlab`,
+    url: `${process.env.NEXT_PUBLIC_GATEWAY_BASE_URL}/rs-service/permintaanlab`,
     method: "GET",
     params,
   });
@@ -136,7 +150,15 @@ export function getListPermintaanPemeriksaanLaboratorium(params) {
 
 export function getDetailPermintaanPemeriksaanLaboratorium(params) {
   return request({
-    url: `${process.env.NEXT_PUBLIC_MOCK_BASE_URL}/rs-service/permintaanlab/show`,
+    url: `${process.env.NEXT_PUBLIC_GATEWAY_BASE_URL}/rs-service/permintaanlab/show`,
+    method: "GET",
+    params,
+  });
+}
+
+export function getDetailGroupingPemeriksaanLaboratorium(params) {
+  return request({
+    url: `${process.env.NEXT_PUBLIC_GATEWAY_BASE_URL}/rs-service/permintaanlab/show`,
     method: "GET",
     params,
   });
@@ -235,10 +257,4 @@ export function getListOptionPrioritas(params) {
 }
 
 //Grouping Pemeriksaan Laboratorium
-export function getDetailGroupingPemeriksaanLaboratorium(params) {
-  return request({
-    url: `${process.env.NEXT_PUBLIC_MOCK_BASE_URL}/rs-service/groupingpemeriksaanlaboratorium/show`,
-    method: "GET",
-    params,
-  });
-}
+

@@ -6,112 +6,27 @@ import {
   getDetailAsesmenPemeriksaanLaboratorium,
   getDetailGroupingPemeriksaanLaboratorium,
   getDetailPermintaanPemeriksaanLaboratorium,
-  getDetailPasienLab,
+  getDetailTransfusiDarah,
+  getListLaboratorium,
+  getListTransfusiDarah,
+  updateTranfusiDarah
 } from "api/laboratorium";
 import LoaderOnLayout from "components/LoaderOnLayout";
-import FormPasien from "components/modules/pasien/form";
 import { formatGenToIso } from "utils/formatTime";
 import getStaticData from "utils/getStaticData";
-import Popover from "@mui/material/Popover";
-import TableLayout from "pages/pasien/TableLayout";
 import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
 import useClientPermission from "custom-hooks/useClientPermission";
 import { formatLabelDate } from "utils/formatTime";
-import { Grid, Card, IconButton, Tooltip, Avatar, Dialog } from "@mui/material";
+import { Grid, Card, Avatar, Dialog } from "@mui/material";
 import PermContactCalendarIcon from "@mui/icons-material/PermContactCalendar";
 import FormTranfusi from "components/modules/laboratorium/formTranfusiDarah";
-import FormExpertise from "components/modules/laboratorium/formExpertise";
-import RiwayatPemeriksaanTable from "components/modules/laboratorium/riwayatPemeriksaanTable";
-import Assessment from "components/modules/laboratorium/assessment";
-import PermintaanLaboratoriumTableLayout from "components/modules/laboratorium/permintaanLaboratoriumTableLayout";
 
-const permintaanTableHead = [
-  {
-    id: "nomor_pemeriksaan",
-    label: "No. Pemeriksaan",
-  },
-  {
-    id: "waktu_permintaan_pemeriksaan",
-    label: "Waktu Permintaan",
-  },
-  {
-    id: "nama_pemeriksaan",
-    label: "Nama Pemeriksaan",
-  },
-  {
-    id: "jenis_pemeriksaan",
-    label: "Jenis Pemeriksaan",
-  },
-  {
-    id: "dokter_pengirim",
-    label: "Dokter Pengirim",
-  },
-  {
-    id: "unit_pengirim",
-    label: "Unit Pengirim",
-  },
-  {
-    id: "diagonsa_kerja",
-    label: "Diagnosis Kerja",
-  },
-  {
-    id: "catatan_permintaan",
-    label: "Catatan Permintaan",
-  },
-];
-const dataPermintaanLaboratoriumFormatHandler = (
-  payload,
-  namaPemeriksaan,
-  jenisPemeriksaan
-) => {
-  const result = payload.map((e) => {
-    return {
-      nomor_pemeriksaan: e.nomor_pemeriksaan || "null",
-      waktu_permintaan_pemeriksaan: e.waktu_permintaan_pemeriksaan || "null",
-      nama_pemeriksaan: namaPemeriksaan || "null",
-      jenis_pemeriksaan: jenisPemeriksaan || "null",
-      dokter_pengirim: e.dokter_pengirim || "null",
-      unit_pengirim: e.unit_pengirim || "null",
-      diagonsa_kerja: e.diagonsa_kerja || "null",
-      catatan_permintaan: e.catatan_permintaan || "null",
-      id: e.id,
-    };
-  });
-  return result;
-};
-
-const riwayatPemeriksaanTableHead = [
-  {
-    id: "tanggal_pemeriksaan",
-    label: "Tanggal Pemeriksaan",
-  },
-  {
-    id: "no_pemeriksaan",
-    label: "No. Pemeriksaan",
-  },
-  {
-    id: "nama_pemeriksaan",
-    label: "Nama Pemeriksaan",
-  },
-  {
-    id: "jenis_pemeriksaan",
-    label: "Jenis Pemeriksaan",
-  },
-  {
-    id: "dokter_pengirim",
-    label: "Dokter Pengirim",
-  },
-  {
-    id: "diagnosis_kerja",
-    label: "Diagnosis Kerja",
-  },
-];
 
 const DetailLaboratorium = () => {
   const router = useRouter();
   const { slug } = router.query;
   const [isEditingMode, setIsEditingMode] = useState(false);
+  const [detailDataTranfusi, setDetailDataTranfusi] = useState({});
   const [dataPasien, setDataPasien] = useState({});
   const [detailDataPasien, setDetailDataPasien] = useState({});
   const [isLoadingDataPasien, setIsLoadingDataPasien] = useState(true);
@@ -142,8 +57,8 @@ const DetailLaboratorium = () => {
       const params = {
         per_page: dataPermintaanLaboratoriumPerPage,
       };
-      const response = await getListPermintaanLaboratorium(params);
-      const result = dataPermintaanLaboratoriumFormatHandler(response.data.data);
+      const response = await getListTransfusiDarah(params);
+      const result = dataFormatterTranfusi(response.data.data);
       setDataPermintaanLaboratorium(result);
       setDataMetaPermintaanLaboratorium(response.data.meta);
     } catch (error) {
@@ -157,8 +72,8 @@ const DetailLaboratorium = () => {
     try {
       setIsUpdatingDataPermintaanLaboratorium(true);
       const response = await getListEmployee(payload);
-      const result = dataPermintaanLaboratoriumFormatHandler(response.data.data);
-      // setDataPermintaanLaboratorium(result);
+      const result = dataFormatterTranfusi(response.data.data);
+      setDataPermintaanLaboratorium(result);
       setDataMetaPermintaanLaboratorium(response.data.meta);
     } catch (error) {
       console.log(error);
@@ -234,9 +149,26 @@ const DetailLaboratorium = () => {
     return { ...tempData };
   };
 
+  const dataFormatterTranfusi = (data) =>{
+    let tempData = {
+    status_pasien: data.status_pasien || "",
+    pmi_rujukan: data.pmi_rujukan || "",
+    alamat: data.alamat || "",
+    tgl_permintaan: formatGenToIso(data.tgl_permintaan) || null,
+    gol_darah: data.gol_darah.value || "",
+    rh: data.rh || "",
+    komponen_yang_diminta: data.komponen_yang_diminta || "",
+    jumlah_yang_diminta: data.jumlah_yang_diminta || "",
+    cara_pembayaran: data.cara_pembayaran || "",
+    keterangan: data.keterangan || "",
+    };
+    return { ...tempData};
+  };
+
   const updateData = (data) => {
-    setDetailDataLaboratrium(data);
+    setDetailDataTranfusi(data);
     setDataLaboratrium(() => dataFormatter(data));
+    setDataPasienTranfusi(() => dataFormatterTranfusi(data))
   };
 
   useEffect(() => {
@@ -244,13 +176,12 @@ const DetailLaboratorium = () => {
     if (router.isReady) {
       (async () => {
         try {
-          const responseAntriandetail = await getDetailPasienLab({ id: slug[0] });
+          const responseAntriandetail = await getDetailTransfusiDarah({ id: slug[0] });
           const dataAntriandetail = responseAntriandetail.data.data;
           setDetailDataAntrianLaboratorium(dataAntriandetail);
-          const noAntrian = dataAntriandetail[0].no_antrian;
-          const idPasien = dataAntriandetail[0].pasien_id;
-          initDataPermintaanLaboratorium();
-          initDataPasien();
+          const noAntrian = dataAntriandetail.no_antrian;
+          const idPasien = dataAntriandetail.pasien_id;
+          // initDataPermintaanLaboratorium();
 
           const responsePasien = await getDetailPasien({ id: idPasien });
           const dataPasien = responsePasien.data.data;
@@ -258,43 +189,12 @@ const DetailLaboratorium = () => {
           setDataPasien(formattedDataPasien);
           setDetailDataPasien(dataPasien);
 
-          const responsePermintaan =
-            await getDetailPermintaanPemeriksaanLaboratorium({
-              no_antrian: noAntrian,
-            });
-          const dataPermintaan = responsePermintaan.data.data;
-          setDataPermintaanLaboratorium(dataPermintaan);
-          const groupingId =
-            dataPermintaan[0].grouping_pemeriksaan_laboratorium_id;
-          const permintaanId = dataPermintaan[0].id;
+          const responseTranfusi = await updateTranfusiDarah({ id: slug[0]});
+          const data = respone.data.data;
+          const formattedData = dataFormatterTranfusi(data);
+          setDataPasienTranfusi(formattedData);
+          setDetailDataTranfusi(data)
 
-          const responseGrouping = await getDetailGroupingPemeriksaanLaboratorium({
-            id: groupingId,
-          });
-          const dataGrouping = responseGrouping.data.data;
-          const namaPemeriksaan = dataGrouping.kategori_pemeriksaan;
-          const jenisPemeriksaan = dataGrouping.jenis_pemeriksaan;
-
-          const formattedDataPermintaanLaboratorium =
-            dataPermintaanLaboratoriumFormatHandler(
-              dataPermintaan,
-              namaPemeriksaan,
-              jenisPemeriksaan
-            );
-
-          setDataPermintaanLaboratorium(formattedDataPermintaanLaboratorium);
-
-          const responseAsesmenPasienLaboratorium =
-            await getDetailAsesmenPasienLaboratorium({ no_antrian: noAntrian });
-          const dataAssPas = responseAsesmenPasienLaboratorium.data.data;
-          setDataAssPas(dataAssPas);
-
-          const responseAsesmenPemeriksaanLaboratorium =
-            await getDetailAsesmenPemeriksaanLaboratorium({
-              permintaanId: permintaanId,
-            });
-          const dataAssPem = responseAsesmenPemeriksaanLaboratorium.data.data;
-          setDataAssPem(dataAssPem);
         } catch (error) {
           console.log(error);
         } finally {
@@ -304,26 +204,6 @@ const DetailLaboratorium = () => {
       })();
     }
   }, [router.isReady, slug]);
-
-  // const menuItems = [
-  //   {
-  //     label: "Assessment Pemeriksaan",
-  //     component: (
-  //       <Assessment
-  //         namaPemeriksaan={
-  //           dataPermintaanLaboratorium.permintaan?.[0]?.nama_pemeriksaan
-  //         }
-  //         jenisPemeriksaan={
-  //           dataPermintaanLaboratorium.permintaan?.[0]?.jenis_pemeriksaan
-  //         }
-  //       />
-  //     ),
-  //   },
-  //   { label: "Hasil Pemeriksaan", component: <FormExpertise /> },
-  //   { label: "Riwayat Pemeriksaan", component: <RiwayatPemeriksaanTable /> },
-  // ];
-
-  // const [selectedTab, setSelectedTab] = useState(0);
 
   return (
     <>
@@ -380,59 +260,15 @@ const DetailLaboratorium = () => {
                 </div>
               </Card>
             </Grid>
-
-            {/* Tambahkan tabel di sini */}
-            <Grid item md={6} sm={12}>
-              <table className="custom-table">
-                <thead>
-                  <tr>
-                  <Card className="px-14 py-12 mb-16">
-                <div className="flex justify-between items-center mb-16">
-                  <div className="flex items-center">
-                    <p className="m-0 ml-8 font-14">Tarif</p>
-                  </div>
-                </div>
-                <div className="flex justify-between items-start">
-                  <div className="flex items-start">
-                    <div className="ml-8 mt-8">
-                      <div className="font-w-700">
-                        {dataPasien?.nama_pasien}
-                      </div>
-                      <div>
-                        {detailDataPasien?.tanggal_lahir
-                          ? formatLabelDate(detailDataPasien.tanggal_lahir)
-                          : ""}{" "}
-                      <span style={{ fontWeight: 'bold' }}>Rp</span>{detailDataPasien?.umur}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Card>
-                  </tr>
-                </thead>
-              </table>
-            </Grid>
           </Grid>
           
           <Tabs
-            // value={selectedTab}
             onChange={(event, newValue) => setSelectedTab(newValue)}
             variant="scrollable"
             scrollButtons="auto"
             aria-label="Sub-menu"
             sx={{ marginBottom: "-18px" }} // Add spacing below the tabs
           >
-            {/* {menuItems.map((item, index) => (
-              <Tab
-                key={index}
-                label={item.label}
-                sx={{
-                  borderBottom:
-                    selectedTab === index ? "2px solid #3f51b5" : "none",
-                  marginRight: "16px", // Add spacing between tabs
-                }}
-              />
-            ))} */}
           </Tabs>
           <h2 className="color-grey-text mt-0">Form Tranfusi Darah</h2>
           <Card sx={{
@@ -440,19 +276,14 @@ const DetailLaboratorium = () => {
             borderTop: "0px",
             borderRadius: "0px"}}>
           
-          <FormTranfusi/>
+          <FormTranfusi
+            isEditType
+            prePopulatedDataForm={dataPasien}
+            detailPrePopulatedData={detailDataTranfusi}
+            updatePrePopulatedData={updateData}
+            />
 
           </Card>
-          {/* <Card
-            sx={{
-              border: "1px solid #e0e0e0",
-              borderTop: "none",
-              borderRadius: "0px",
-              marginBottom: "16px", // Add spacing below the card
-            }}
-          >
-            {menuItems[selectedTab].component}
-          </Card> */}
         </>
       )}
       

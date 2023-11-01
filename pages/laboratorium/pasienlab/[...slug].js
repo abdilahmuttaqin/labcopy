@@ -23,6 +23,7 @@ import PermContactCalendarIcon from "@mui/icons-material/PermContactCalendar";
 import FormExpertise from "components/modules/laboratorium/formExpertise";
 import RiwayatPemeriksaanTable from "components/modules/laboratorium/riwayatPemeriksaanTable";
 import Assessment from "components/modules/laboratorium/assessment";
+import FormHasilPemeriksaan from "components/modules/laboratorium/formHasilPemeriksaan";
 import PermintaanLaboratoriumTableLayout from "components/modules/laboratorium/permintaanLaboratoriumTableLayout";
 
 const permintaanTableHead = [
@@ -31,27 +32,19 @@ const permintaanTableHead = [
     label: "No. Pemeriksaan",
   },
   {
-    id: "waktu_permintaan_pemeriksaan",
+    id: "waktu_permintaan",
     label: "Waktu Permintaan",
   },
-  // {
-  //   id: "nama_pemeriksaan",
-  //   label: "Nama Pemeriksaan",
-  // },
-  // {
-  //   id: "jenis_pemeriksaan",
-  //   label: "Jenis Pemeriksaan",
-  // },
   {
     id: "dokter_pengirim",
     label: "Dokter Pengirim",
   },
   {
-    id: "unit_pengirim",
+    id: "unit",
     label: "Unit Pengirim",
   },
   {
-    id: "diagonsa_kerja",
+    id: "diagnosis_kerja",
     label: "Diagnosis Kerja",
   },
   {
@@ -61,15 +54,11 @@ const permintaanTableHead = [
 ];
 const dataPermintaanLaboratoriumFormatHandler = (
   payload,
-  // namaPemeriksaan,
-  // jenisPemeriksaan
 ) => {
   const result = payload.map((e) => {
     return {
       no_pemeriksaan: e.no_pemeriksaan || "null",
       waktu_permintaan_pemeriksaan: e.waktu_permintaan_pemeriksaan || "null",
-      // nama_pemeriksaan: namaPemeriksaan || "null",
-      // jenis_pemeriksaan: jenisPemeriksaan || "null",
       dokter_pengirim: e.dokter_pengirim || "null",
       unit_pengirim: e.unit_pengirim || "null",
       diagnosis_kerja: e.diagnosis_kerja || "null",
@@ -187,7 +176,8 @@ const DetailLaboratorium = () => {
 
   const dataFormatterPasien = (data) => {
     let tempData = {
-      nama_pasien: data.nama_pasien || "",
+      nama_pasien: data.nama_pasien || "", 
+      tarif: data.tarif || "0",
       jenis_kelamin:
         data.jenis_kelamin !== null && data.jenis_kelamin !== undefined
           ? data.jenis_kelamin
@@ -246,10 +236,9 @@ const DetailLaboratorium = () => {
           const responseAntriandetail = await getDetailLaboratorium({ id: slug[0] });
           const dataAntriandetail = responseAntriandetail.data.data;
           setDetailDataAntrianLaboratorium(dataAntriandetail);
-          const noAntrian = dataAntriandetail[0].no_antrian;
-          const idPasien = dataAntriandetail[0].pasien_id;
+          const noAntrian = dataAntriandetail.no_antrian;
+          const idPasien = dataAntriandetail.pasien_id;
           initDataPermintaanLaboratorium();
-          initDataPasien();
 
           const responsePasien = await getDetailPasien({ id: idPasien });
           const dataPasien = responsePasien.data.data;
@@ -329,7 +318,7 @@ const DetailLaboratorium = () => {
         />
       ),
     },
-    { label: "Hasil Pemeriksaan", component: <FormExpertise /> },
+    { label: "Hasil Pemeriksaan", component: <FormHasilPemeriksaan /> },
     { label: "Riwayat Pemeriksaan", component: <RiwayatPemeriksaanTable /> },
   ];
 
@@ -402,17 +391,14 @@ const DetailLaboratorium = () => {
                     <p className="m-0 ml-8 font-14">Tarif</p>
                   </div>
                 </div>
-                <div className="flex justify-between items-start">
+                <div>
                   <div className="flex items-start">
-                    <div className="ml-8 mt-8">
-                      <div className="font-w-700">
-                        {dataPasien?.nama_pasien}
+                    <div className="ml-8 mt-">
+                      <div className="font-28 font-w-700">
+                      <span style={{ fontWeight: 'bold' }}>Rp</span>{detailDataPasien?.pasien}
+                        {dataPasien?.tarif}
                       </div>
                       <div>
-                        {detailDataPasien?.tanggal_lahir
-                          ? formatLabelDate(detailDataPasien.tanggal_lahir)
-                          : ""}{" "}
-                      <span style={{ fontWeight: 'bold' }}>Rp</span>{detailDataPasien?.pasien}
                       </div>
                     </div>
                   </div>

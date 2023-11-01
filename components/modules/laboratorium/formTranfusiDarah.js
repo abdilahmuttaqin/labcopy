@@ -16,7 +16,7 @@ import SelectAsync from "components/SelectAsync";
 import SelectStatic from "components/SelectStatic";
 import DatePicker from "components/DatePicker";
 import { stringSchema, dateSchema } from "utils/yupSchema";
-import { createSuster, updateSuster, getDetailSuster } from "api/suster";
+import { createSuster, updateTranfusiDarah, getDetailTransfusiDarah} from "api/laboratorium";
 import { getListOptionEmployee } from "api/employee";
 import { golDarah } from "public/static/data";
 import { rh } from "public/static/data";
@@ -46,7 +46,7 @@ const CheckupToPrint = forwardRef(function CheckupToPrint({ data }, ref) {
   </div>
 
   <hr></hr>
-  <center><div className="font-w-600">HASIL PEMERIKSAAN RADIOLOGI</div></center>
+  <center><div className="font-w-600">HASIL PEMERIKSAAN LABORATORIUM</div></center>
       <div className="flex p-4" style={{ display: "flex", justifyContent: "space-between" }}>
         <div className="column">
           <div>No. Pemeriksaan: {data.no_pemeriksaan || "-"}</div>
@@ -130,23 +130,22 @@ const FormTranfusi = ({
       let data = {
         status_pasien: values.status_pasien,
         pmi_rujukan: values.pmi_rujukan,
-        alamat,
+        alamat: values.alamat,
         tgl_permintaan: formatIsoToGen(values.tgl_permintaan),
         gol_darah: values.gol_darah.value,
         rh,
         komponen_yang_diminta: values.komponen_yang_diminta,
         jumlah_yang_diminta: values.jumlah_yang_diminta,
         cara_pembayaran: values.cara_pembayaran,
-        keterangan: values.keterangan
-  
+        keterangan: values.keterangan,
       };
       try {
         if (!isEditType) {
           await createSuster(data);
           resetForm();
         } else {
-          await updateSuster({ ...data, id: detailPrePopulatedData.id });
-          const response = await getDetailSuster({
+          await updateTranfusiDarah({ ...data, id: detailPrePopulatedData.id });
+          const response = await getDetailTransfusiDarah({
             id: detailPrePopulatedData.id,
           });
           updatePrePopulatedData({ ...response.data.data });
@@ -328,7 +327,20 @@ const FormTranfusi = ({
             >
               Kembali
             </Button>
-
+            <LoadingButton
+                type="submit"
+                variant="contained"
+                disabled={
+                  JSON.stringify(tranfusiValidation.initialValues) ===
+                  JSON.stringify(tranfusiValidation.values) ||
+                  !isActionPermitted("baranglab:update")
+                }
+                startIcon={<SaveIcon />}
+                loadingPosition="start"
+                loading={tranfusiValidation.isSubmitting}
+              >
+                Simpan perubahan
+              </LoadingButton>
               <ReactToPrint
                 trigger={() => (
                   <Button variant="outlined" startIcon={<PrintIcon />}>

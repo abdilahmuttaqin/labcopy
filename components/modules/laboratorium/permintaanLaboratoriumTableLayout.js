@@ -20,18 +20,17 @@ const PermintaanLaboratoriumTableLayout = ({ tableHead, data }) => {
 
   // Efek ini akan berjalan saat data berubah
   useEffect(() => {
-    if (isDataValid) {
-      // Menyortir data berdasarkan "nomor_pemeriksaan"
-      const sorted = [...data].sort((a, b) => {
-        const nomorA = String(a.nomor_pemeriksaan || ""); // Mengonversi ke string, jika bukan string
-        const nomorB = String(b.nomor_pemeriksaan || ""); // Mengonversi ke string, jika bukan string
-        return nomorA.localeCompare(nomorB);
-      });
+    // if (isDataValid) {
+    //   const sorted = [...data].sort((a, b) => {
+    //     const nomorA = String(a.nomor_pemeriksaan || ""); // Mengonversi ke string, jika bukan string
+    //     const nomorB = String(b.nomor_pemeriksaan || ""); // Mengonversi ke string, jika bukan string
+    //     return nomorA.localeCompare(nomorB);
+    //   });
 
-      setSortedData(sorted);
-    } else {
-      setSortedData([]); // Jika data tidak valid, set sortedData menjadi array kosong
-    }
+    //   setSortedData(sorted);
+    // } else {
+    //   setSortedData([]); // Jika data tidak valid, set sortedData menjadi array kosong
+    // }
   }, [data]); // Bergantung pada perubahan data
 
   return (

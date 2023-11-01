@@ -60,41 +60,17 @@ const dataTransfusiDarahFormatHandler = (payload) => {
 };
 
 const TransfusiDarah = () => {
-  const [dataPasien, setDataPasien] = useState([]);
-  const [dataMetaPasien, setDataMetaPasien] = useState({});
-  const [isLoadingDataPasien, setIsLoadingDataPasien] = useState(false);
-  const [isUpdatingDataPasien, setIsUpdatingDataPasien] = useState(false);
+  const [dataTransfusiDarah, setDataTransfusiDarah] = useState([]);
+  const [dataMetaTransfusiDarah, setDataMetaPermintaanTransfusiDarah ] = useState({});
+  const [dataTransfusiDarahPerPage, setDataPerPage] = useState(8);
+  const [isLoadingDataTransfusiDarah, setIsLoadingDataTransfusiDarah] = useState(false);
+  const [isUpdatingDataTransfusiDarah, setIsUpdatingDataTransfusiDarah] = useState(false);
   const router = useRouter();
   const [snackbarState, setSnackbarState] = useState({
     state: false,
     type: null,
     message: "",
   });
-  const [activeContent, setActiveContent] = useState(1);
-
-  // pasien --general state
-  const [dataTransfusiDarah, setDataTransfusiDarah] = useState([]);
-  const [dataMetaTransfusiDarah, setDataMetaPermintaanTransfusiDarah ] = useState({});
-  const [dataTransfusiDarahPerPage, setDataPerPage] = useState(8);
-  const [isLoadingDataTransfusiDarah, setIsLoadingDataTransfusiDarah] = useState(false);
-  const [isUpdatingDataTransfusiDarah, setIsUpdatingDataTransfusiDarah] = useState(false);
-
-  const initDataPasien = async () => {
-    try {
-      setIsLoadingDataPasien(true);
-      const params = {
-        per_page: dataPasienPerPage,
-      };
-      const response = await getListPasien(params);
-      const result = dataPasienFormatHandler(response.data.data);
-      setDataPasien(result);
-      setDataMetaPasien(response.data.meta);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoadingDataPasien(false);
-    }
-  };
   
   const initDataTransfusiDarah = async () => {
     try {
@@ -112,6 +88,7 @@ const TransfusiDarah = () => {
       setIsLoadingDataTransfusiDarah(false);
     }
   };
+
   const updateDataTransfusiDarahHandler = async (payload) => {
     try {
       setIsUpdatingDataTransfusiDarah(true);
@@ -130,6 +107,7 @@ const TransfusiDarah = () => {
       setIsUpdatingDataTransfusiDarah(false);
     }
   };
+
   const deletaDataTransfusiDarahHandler = async (payload) => {
     try {
       setIsUpdatingDataTransfusiDarah(true);
@@ -150,6 +128,7 @@ const TransfusiDarah = () => {
       setIsUpdatingDataTransfusiDarah(false);
     }
   };
+
   const searchDataTransfusiDarahHandler = async (payload) => {
     try {
       setIsUpdatingDataTransfusiDarah(true);
@@ -185,16 +164,11 @@ const TransfusiDarah = () => {
       setIsUpdatingDataTransfusiDarah(false);
     }
   };
-  useEffect(() => {
-    if (Object.keys(router.query).length !== 0) {
-      setActiveContent(parseInt(router.query.active_content));
-    }
-  }, [router]);
 
   useEffect(() => {
     initDataTransfusiDarah();
-    initDataPasien();
   }, []);
+  
   return (
     <>
       {isLoadingDataTransfusiDarah ? (
