@@ -55,7 +55,6 @@ const dataTransfusiDarahFormatHandler = (payload) => {
       id: e.id,
     };
   });
-  // result.sort((a, b) => parseInt(a.antrian) - parseInt(b.antrian));
   return result;
 };
 

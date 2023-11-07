@@ -63,15 +63,15 @@ export const golDarah = [
   { name: "O", value: "4" },
 ];
 
-export const cara_pembayaran = [
+export const cara_bayar = [
   { name: "TUNAI", value: "1" },
   { name: "TAGIHAN", value: "2" },
   { name: "Lada Manis", value: "3" },
 ];
 
 export const rh = [
-  { name: "POSITIF", value: "1" },
-  { name: "NEGATIF", value: "2" },
+  { name: "POSITIF", value: true },
+  { name: "NEGATIF", value: false },
 ];
 
 export const statusAktif = [

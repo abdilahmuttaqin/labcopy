@@ -154,6 +154,11 @@ let SideList = [
         permission: ["radiologi:all"],
         routePath: "/laboratorium/inventory/stok",
       },
+      {
+        name: "Inventory1.0",
+        permission: ["radiologi:all"],
+        routePath: "/laboratorium/inventory1.0",
+      },
 
     ],
     childrenState: false,
