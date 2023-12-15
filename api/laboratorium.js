@@ -1,6 +1,22 @@
 // utils/api/laboratorium.js
 import request from "utils/request";
 
+//filter
+export function getListOptionPrioritasLab(params) {
+  return request({
+    url: `${process.env.NEXT_PUBLIC_GATEWAY_BASE_URL}/rs-service/permintaanlab/list`,
+    method: "GET",
+    params,
+  });
+}
+export function getListOptionUnit(params) {
+  return request({
+    url: `${process.env.NEXT_PUBLIC_GATEWAY_BASE_URL}/rs-service/unit/list`,
+    method: "GET",
+    params,
+  });
+}
+
 //Permintaan Pemeriksaan Laboratorium
 export function getListLaboratorium(params) {
   return request({
@@ -44,8 +60,8 @@ export function getListTransfusiDarah(params) {
 }
 export function getDetailTransfusiDarah(params) {
   return request({
-    url: `${process.env.NEXT_PUBLIC_GATEWAY_BASE_URL}/rs-service/transfusidarah/show`,
-    method: "GET",
+    url: `${process.env.NEXT_PUBLIC_GATEWAY_BASE_URL}/rs-service/transfusidarah`,
+    method: "PATCH",
     params,
   });
 }
@@ -257,4 +273,13 @@ export function getListOptionPrioritas(params) {
 }
 
 //Grouping Pemeriksaan Laboratorium
+
+//riwayat pemeriksaan lab
+export function getRiwayatLaboratorium(params) {
+  return request({
+    url: `${process.env.NEXT_PUBLIC_GATEWAY_BASE_URL}/rs-service/permintaanlab/show`,
+    method: "GET",
+    params,
+  });
+}
 

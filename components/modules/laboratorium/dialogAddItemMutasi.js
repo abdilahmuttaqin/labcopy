@@ -161,8 +161,6 @@ const DialogAddItem = ({
                     </div>
                   </Grid>
                 </Grid>
-
-
               </Grid>
 
               <div style={{display: 'flex', justifyContent: 'flex-end'}}>

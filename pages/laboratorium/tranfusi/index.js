@@ -10,6 +10,8 @@ import TableLayoutPasienLab from "components/TableLayoutPasienLab";
 import LoaderOnLayout from "components/LoaderOnLayout";
 import Snackbar from "components/SnackbarMui";
 import { getListPasien } from "api/pasien";
+import TableLayoutV2 from "pages/pasien/TableLayout";
+import TableLayoutV3 from "components/TableLayoutV3";
 
 const TransfusiDarahTableHead = [
   {
@@ -174,7 +176,7 @@ const TransfusiDarah = () => {
         <LoaderOnLayout />
       ) : (
         <>
-          <TableLayoutPasienLab
+          <TableLayoutV3
             baseRoutePath={`${router.asPath}`}
             title="Tranfusi Darah"
             tableHead={TransfusiDarahTableHead}

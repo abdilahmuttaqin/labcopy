@@ -205,31 +205,12 @@ const FormAssessmentPasien = ({
   
   return (
     <Grid container spacing={2}>
-      <Grid container justifyContent="flex-end" spacing={2} sx={{ marginTop: "12px", marginRight: "12px" }}>
-        
-
-        {/* tombol edit */}
-        <FormControlLabel control={ <Grid item>
-          <Switch
-            checked={isEditingMode}
-            onChange={handleIsEditingMode}
-            inputProps={{ "aria-label": "controlled" }}
-            disabled={!isActionPermitted("asesmenpasienradiologi:update")}
-          >
-            Edit Data
-          </Switch>
-        </Grid>}>
-        </FormControlLabel>
-       
-      </Grid>
       <Grid item xs={12} md={6}>
         <Paper
-          elevation={3}
           sx={{
             padding: "16px",
             mb: "16px",
             mt: "16px",
-            opacity: isEditingMode ? 1 : 0.5,
           }}
         >
           <form onSubmit={AssessmentPasienValidation.handleSubmit}>
@@ -243,7 +224,6 @@ const FormAssessmentPasien = ({
                 onChange={AssessmentPasienValidation.handleChange}
                 error={AssessmentPasienValidation.touched.noWhatsapp && Boolean(AssessmentPasienValidation.errors.noWhatsapp)}
                 helperText={AssessmentPasienValidation.touched.noWhatsapp && AssessmentPasienValidation.errors.noWhatsapp}
-                disabled={!isEditingMode}
               />
             </div>
             <div className="mb-16">
@@ -256,7 +236,6 @@ const FormAssessmentPasien = ({
                 onChange={AssessmentPasienValidation.handleChange}
                 error={AssessmentPasienValidation.touched.email && Boolean(AssessmentPasienValidation.errors.email)}
                 helperText={AssessmentPasienValidation.touched.email && AssessmentPasienValidation.errors.email}
-                disabled={!isEditingMode}
               />
             </div>
             <div className="mb-16">
@@ -264,7 +243,6 @@ const FormAssessmentPasien = ({
                 id="diambil"
                 label="Tanggal Diambil"
                 handlerRef={AssessmentPasienValidation}
-                disabled={!isEditingMode}
               />
             </div>
           </form>
@@ -280,30 +258,11 @@ const FormAssessmentPasien = ({
           }}
         >
           <form onSubmit={AssessmentPasienValidation.handleSubmit}>
-            {/* <div className="mb-16">
-            <SelectStatic
-                  id="status_alergi"
-                  handlerRef={AssessmentPasienValidation}
-                  label="Status Alergi"
-                  options={statusAlergi}
-                  disabled={!isEditingMode}
-                />
-            </div> */}
-            {/* <div className="mb-16">
-            <SelectStatic
-                  id="status_kehamilan"
-                  handlerRef={AssessmentPasienValidation}
-                  label="Status Kehamilan"
-                  options={statusKehamilan}
-                  disabled={!isEditingMode}
-                />
-            </div> */}
             <div className="mb-16">
               <DateTimePickerComp
                 id="waktu_pemeriksaan"
                 label="Waktu Pemeriksaan"
                 handlerRef={AssessmentPasienValidation}
-                disabled={!isEditingMode}
               />
             </div>
           </form>
@@ -318,7 +277,6 @@ const FormAssessmentPasien = ({
               color="error"
               startIcon={<CancelIcon />}
               onClick={() => handleOpenDialog("cancel")}
-              disabled={!isEditingMode} 
             >
               BATAL
             </Button>
@@ -330,7 +288,6 @@ const FormAssessmentPasien = ({
               startIcon={<SaveIcon />}
               loading={AssessmentPasienValidation.isSubmitting}
               onClick={() => handleOpenDialog("save")}
-              disabled={!isEditingMode || !isActionPermitted("asesmenpasienradiologi:store")}
             >
               SIMPAN
             </LoadingButton>

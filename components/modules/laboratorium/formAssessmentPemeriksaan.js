@@ -207,21 +207,6 @@ const FormAssessmentPemeriksaan = ({
 
   return (
     <Grid container spacing={2}>
-      <Grid container justifyContent="flex-end" spacing={2} sx={{ marginTop: "12px", marginRight: "200px" }}>
-        <FormControlLabel control={ <Grid item>
-          <Switch
-            checked={isEditingMode}
-            onChange={handleIsEditingMode}
-            inputProps={{ "aria-label": "controlled" }}
-            disabled={!isActionPermitted("asesmenpasienradiologi:update")}
-          >
-            Edit Data
-          </Switch>
-        </Grid>}>
-
-        </FormControlLabel>
-       
-      </Grid>
       <Grid item xs={12} md={6}>
         <Paper
           elevation={3}
@@ -229,7 +214,6 @@ const FormAssessmentPemeriksaan = ({
             padding: "16px",
             mb: "16px",
             mt: "16px",
-            opacity: isEditingMode ? 1 : 0.5,
           }}
         >
           <form onSubmit={AssessmentPemerikasaanValidation.handleSubmit}>
@@ -243,7 +227,7 @@ const FormAssessmentPemeriksaan = ({
                 onChange={AssessmentPemerikasaanValidation.handleChange}
                 error={AssessmentPemerikasaanValidation.touched.namaPemeriksaan && Boolean(AssessmentPemerikasaanValidation.errors.namaPemeriksaan)}
                 helperText={AssessmentPemerikasaanValidation.touched.namaPemeriksaan && AssessmentPemerikasaanValidation.errors.namaPemeriksaan}
-                disabled={!isEditingMode}
+
               />
             </div>
             <div className="mb-16">
@@ -252,18 +236,9 @@ const FormAssessmentPemeriksaan = ({
                   handlerRef={AssessmentPemerikasaanValidation}
                   label="Jenis Pemeriksaan"
                   options={statusAlergi}
-                  disabled={!isEditingMode}
+  
                 />
             </div>
-
-            {/* <div className="mb-16">
-              <DateTimePickerComp
-                id="diambil"
-                label="Tanggal Diambil"
-                handlerRef={AssessmentPemerikasaanValidation}
-                disabled={!isEditingMode}
-              />
-            </div> */}
           </form>
         </Paper>
       </Grid>
@@ -277,7 +252,7 @@ const FormAssessmentPemeriksaan = ({
           }}
         >
           <form onSubmit={AssessmentPemerikasaanValidation.handleSubmit}>
-          <div className="mb-16">
+            <div className="mb-16">
               <TextField
                 fullWidth
                 id="tarif_pemeriksaan"
@@ -287,26 +262,9 @@ const FormAssessmentPemeriksaan = ({
                 onChange={AssessmentPemerikasaanValidation.handleChange}
                 error={AssessmentPemerikasaanValidation.touched.tarif_pemeriksaan && Boolean(AssessmentPemerikasaanValidation.errors.tarif_pemeriksaan)}
                 helperText={AssessmentPemerikasaanValidation.touched.tarif_pemeriksaan && AssessmentPemerikasaanValidation.errors.tarif_pemeriksaan}
-                disabled={!isEditingMode}
+
               />
             </div>
-            {/* <div className="mb-16">
-            <SelectStatic
-                  id="status_kehamilan"
-                  handlerRef={AssessmentPemerikasaanValidation}
-                  label="Status Kehamilan"
-                  options={statusKehamilan}
-                  disabled={!isEditingMode}
-                />
-            </div>
-            <div className="mb-16">
-              <DateTimePickerComp
-                id="waktu_pemeriksaan"
-                label="Waktu Pemeriksaan"
-                handlerRef={AssessmentPemerikasaanValidation}
-                disabled={!isEditingMode}
-              />
-            </div> */}
           </form>
 
         </Paper>
@@ -318,8 +276,7 @@ const FormAssessmentPemeriksaan = ({
               variant="contained"
               color="error"
               startIcon={<CancelIcon />}
-              onClick={() => handleOpenDialog("cancel")}
-              disabled={!isEditingMode} 
+              onClick={() => handleOpenDialog("cancel")} 
             >
               BATAL
             </Button>
@@ -331,7 +288,6 @@ const FormAssessmentPemeriksaan = ({
               startIcon={<SaveIcon />}
               loading={AssessmentPemerikasaanValidation.isSubmitting}
               onClick={() => handleOpenDialog("save")}
-              disabled={!isEditingMode || !isActionPermitted("asesmenpasienradiologi:store")}
             >
               SIMPAN
             </LoadingButton>

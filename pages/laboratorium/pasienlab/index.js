@@ -75,7 +75,7 @@ const Laboratorium = () => {
   // pasien --general state
   const [dataLaboratorium, setDataLaboratorium] = useState([]);
   const [dataMetaLaboratorium, setDataMetaPermintaanLaboratorium ] = useState({});
-  const [dataLaboratoriumPerPage, setDataPerPage] = useState(8);
+  const [dataLaboratoriumPerPage, setDataLaboratoriumPerPage] = useState(8);
   const [isLoadingDataLaboratorium, setIsLoadingDataLaboratorium] = useState(false);
   const [isUpdatingDataLaboratorium, setIsUpdatingDataLaboratorium] = useState(false);
 
@@ -153,7 +153,7 @@ const Laboratorium = () => {
   const searchDataLaboratoriumHandler = async (payload) => {
     try {
       setIsUpdatingDataLaboratorium(true);
-      const response = await searchLaboratorium({
+      const response = await getListLaboratorium({
         search_text: payload.map((e) => e.value),
         search_column: payload.map((e) => e.type),
         per_page: dataLaboratoriumPerPage,
@@ -204,20 +204,24 @@ const Laboratorium = () => {
           <TableLayoutPasienLab
             baseRoutePath={`${router.asPath}`}
             title="Pasien Laboratorium"
+            isBtnAdd={false}
             tableHead={laboratoriumTableHead}
             data={dataLaboratorium}
             meta={dataMetaLaboratorium}
             dataPerPage={dataLaboratoriumPerPage}
             isUpdatingData={isUpdatingDataLaboratorium}
             filterOptions={[
-              { label: "Tipe Jaminan", value: "asuransi" },
-              { label: "Pelayanan", value: "poli" },
               { label: "Prioritas", value: "prioritas" },
+              { label: "Unit", value: "unit" },
               { label: "Tanggal", value: "date" },
             ]}
-            updateDataPerPage={(e) => {
-              setDataPerPage(e.target.value);
-              updateDataLaboratoriumHandler({ per_page: e.target.value });
+            updateDataPerPage={(e, filter) => {
+              setDataLaboratoriumPerPage(e.target.value);
+              updateDataLaboratoriumHandler({ 
+                per_page: e.target.value,
+                search_text: filter.map((e) => e.value),
+                search_column: filter.map((e) => e.type),
+              });
             }}
             updateDataNavigate={(payload) =>
               updateDataLaboratoriumHandler({

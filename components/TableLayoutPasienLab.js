@@ -42,7 +42,8 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers//LocalizationProvider";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { formatIsoToGen } from "utils/formatTime";
-import { getListOptionPrioritas } from "api/radiologi";
+import { getListOptionUnit } from "api/laboratorium";
+import { getListOptionPrioritasLab } from "api/laboratorium";
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -73,27 +74,35 @@ const TableLayoutPasienLab = ({
   const { clientPermission } = useClientPermission();
   const [filter, setFilter] = useState(filterOptions[0].value);
   const [selectedFilter, setSelectedFilter] = useState([]);
-  const textFieldCategory = ["no_rm", "email", "name", "address"];
-  const [poliRef, setPoliRef] = useState({
-    values: {
-      id: "",
-      name: "",
-    },
-    touched: false,
-    errors: false,
-  });
-  const [asuransiRef, setAsuransiRef] = useState({
-    values: {
-      id: "",
-      name: "",
-    },
-    touched: false,
-    errors: false,
-  });
+  const textFieldCategory = ["prioritas", "unit", "date"];
+  // const [poliRef, setPoliRef] = useState({
+  //   values: {
+  //     id: "",
+  //     name: "",
+  //   },
+  //   touched: false,
+  //   errors: false,
+  // });
+  // const [asuransiRef, setAsuransiRef] = useState({
+  //   values: {
+  //     id: "",
+  //     name: "",
+  //   },
+  //   touched: false,
+  //   errors: false,
+  // });
   const [prioritasRef, setPrioritasRef] = useState({
     values: {
-      id: "",
-      prioritas: "",
+      id_prioritas: "",
+      name_prioritas: "",
+    },
+    touched: false,
+    errors: false,
+  });
+  const [unitRef, setUnitRef] = useState({
+    values: {
+      id_unit: "",
+      name: "",
     },
     touched: false,
     errors: false,
@@ -182,25 +191,32 @@ const TableLayoutPasienLab = ({
 
   const handleRefresh = () => {
     setSearchText("");
-    setPoliRef((e) => ({
-      ...e,
-      values: {
-        id: "",
-        name: "",
-      },
-    }));
-    setAsuransiRef((e) => ({
-      ...e,
-      values: {
-        id: "",
-        name: "",
-      },
-    }));
+    // setPoliRef((e) => ({
+    //   ...e,
+    //   values: {
+    //     id: "",
+    //     name: "",
+    //   },
+    // }));
+    // setAsuransiRef((e) => ({
+    //   ...e,
+    //   values: {
+    //     id: "",
+    //     name: "",
+    //   },
+    // }));
     setPrioritasRef((e) => ({
       ...e,
       values: {
-        id: "",
-        prioritas: "",
+        id_prioritas: "",
+        name_prioritas: "",
+      },
+    }));
+    setUnitRef((e) => ({
+      ...e,
+      values: {
+        id_unit: "",
+        name: "",
       },
     }));
     setDate(null);
@@ -222,24 +238,31 @@ const TableLayoutPasienLab = ({
 
   const handleChangeFilter = (event) => {
     setSearchText("");
-    setPoliRef((e) => ({
-      ...e,
-      values: {
-        id: "",
-        name: "",
-      },
-    }));
-    setAsuransiRef((e) => ({
-      ...e,
-      values: {
-        id: "",
-        name: "",
-      },
-    }));
+    // setPoliRef((e) => ({
+    //   ...e,
+    //   values: {
+    //     id: "",
+    //     name: "",
+    //   },
+    // }));
+    // setAsuransiRef((e) => ({
+    //   ...e,
+    //   values: {
+    //     id: "",
+    //     name: "",
+    //   },
+    // }));
     setPrioritasRef((e) => ({
       ...e,
       values: {
-        id: "",
+        id_prioritas: "",
+        name_prioritas: "",
+      },
+    }));
+    setUnitRef((e) => ({
+      ...e,
+      values: {
+        id_unit: "",
         name: "",
       },
     }));
@@ -265,63 +288,64 @@ const TableLayoutPasienLab = ({
     searchData(tempFilterDisplay);
   };
 
-  const handleOnChangePoli = (value) => {
-    if (value) {
-      setPoliRef((e) => ({
-        ...e,
-        values: {
-          ...value,
-        },
-      }));
-      let tempOptions = filterOptions.filter((e) => e.value === filter);
-      let tempFilterDisplay = [...selectedFilter];
-      tempFilterDisplay = tempFilterDisplay.filter((e) => e.type !== filter);
-      tempFilterDisplay.unshift({
-        type: filter,
-        label: tempOptions[0].label,
-        value: value.name,
-      });
-      setSelectedFilter(tempFilterDisplay);
-      searchData(tempFilterDisplay);
-    } else {
-      setPoliRef((e) => ({
-        ...e,
-        values: {
-          id: "",
-          name: "",
-        },
-      }));
-    }
-  };
+  // const handleOnChangePoli = (value) => {
+  //   if (value) {
+  //     setPoliRef((e) => ({
+  //       ...e,
+  //       values: {
+  //         ...value,
+  //       },
+  //     }));
+  //     let tempOptions = filterOptions.filter((e) => e.value === filter);
+  //     let tempFilterDisplay = [...selectedFilter];
+  //     tempFilterDisplay = tempFilterDisplay.filter((e) => e.type !== filter);
+  //     tempFilterDisplay.unshift({
+  //       type: filter,
+  //       label: tempOptions[0].label,
+  //       value: value.name,
+  //     });
+  //     setSelectedFilter(tempFilterDisplay);
+  //     searchData(tempFilterDisplay);
+  //   } 
+  //   else {
+  //     setPoliRef((e) => ({
+  //       ...e,
+  //       values: {
+  //         id: "",
+  //         name: "",
+  //       },
+  //     }));
+  //   }
+  // };
 
-  const handleOnChangeAsuransi = (value) => {
-    if (value) {
-      setAsuransiRef((e) => ({
-        ...e,
-        values: {
-          ...value,
-        },
-      }));
-      let tempOptions = filterOptions.filter((e) => e.value === filter);
-      let tempFilterDisplay = [...selectedFilter];
-      tempFilterDisplay = tempFilterDisplay.filter((e) => e.type !== filter);
-      tempFilterDisplay.unshift({
-        type: filter,
-        label: tempOptions[0].label,
-        value: value.name,
-      });
-      setSelectedFilter(tempFilterDisplay);
-      searchData(tempFilterDisplay);
-    } else {
-      setAsuransiRef((e) => ({
-        ...e,
-        values: {
-          id: "",
-          name: "",
-        },
-      }));
-    }
-  };
+  // const handleOnChangeAsuransi = (value) => {
+  //   if (value) {
+  //     setAsuransiRef((e) => ({
+  //       ...e,
+  //       values: {
+  //         ...value,
+  //       },
+  //     }));
+  //     let tempOptions = filterOptions.filter((e) => e.value === filter);
+  //     let tempFilterDisplay = [...selectedFilter];
+  //     tempFilterDisplay = tempFilterDisplay.filter((e) => e.type !== filter);
+  //     tempFilterDisplay.unshift({
+  //       type: filter,
+  //       label: tempOptions[0].label,
+  //       value: value.name,
+  //     });
+  //     setSelectedFilter(tempFilterDisplay);
+  //     searchData(tempFilterDisplay);
+  //   } else {
+  //     setAsuransiRef((e) => ({
+  //       ...e,
+  //       values: {
+  //         id: "",
+  //         name: "",
+  //       },
+  //     }));
+  //   }
+  // };
   const handleOnChangePrioritas = (value) => {
     if (value) {
       setPrioritasRef((e) => ({
@@ -336,7 +360,7 @@ const TableLayoutPasienLab = ({
       tempFilterDisplay.unshift({
         type: filter,
         label: tempOptions[0].label,
-        value: value.prioritas,
+        value: value.name_prioritas,
       });
       setSelectedFilter(tempFilterDisplay);
       searchData(tempFilterDisplay);
@@ -344,8 +368,37 @@ const TableLayoutPasienLab = ({
       setPrioritasRef((e) => ({
         ...e,
         values: {
-          id: "",
-          prioritas: "",
+          id_prioritas: "",
+          name_prioritas: "",
+        },
+      }));
+    }
+  };
+
+  const handleOnChangeUnit = (value) => {
+    if (value) {
+      setUnitRef((e) => ({
+        ...e,
+        values: {
+          ...value,
+        },
+      }));
+      let tempOptions = filterOptions.filter((e) => e.value === filter);
+      let tempFilterDisplay = [...selectedFilter];
+      tempFilterDisplay = tempFilterDisplay.filter((e) => e.type !== filter);
+      tempFilterDisplay.unshift({
+        type: filter,
+        label: tempOptions[0].label,
+        value: value.name,
+      });
+      setSelectedFilter(tempFilterDisplay);
+      searchData(tempFilterDisplay);
+    } else {
+      setUnitRef((e) => ({
+        ...e,
+        values: {
+          id_unit: "",
+          name: "",
         },
       }));
     }
@@ -371,7 +424,7 @@ const TableLayoutPasienLab = ({
 
   const RenderFieldFilter = (
     <>
-      {textFieldCategory.includes(filter) ? (
+      {/* {textFieldCategory.includes(filter) ? (
         <TextField
           id={`search-${title}`}
           label={`Cari ${title}`}
@@ -391,38 +444,27 @@ const TableLayoutPasienLab = ({
             }
           }}
         />
-      ) : null}
-      {filter === "poli" ? (
-        <SelectAsync
-          id="poli"
-          labelField="Pelayanan"
-          labelOptionRef="name"
-          valueOptionRef="id"
-          handlerRef={poliRef}
-          handlerFetchData={getListOptionPoliklinik}
-          handlerOnChange={(value) => handleOnChangePoli(value)}
-        />
-      ) : null}
-      {filter === "asuransi" ? (
-        <SelectAsync
-          id="id"
-          labelField="Tipe Jaminan"
-          labelOptionRef="name"
-          valueOptionRef="id"
-          handlerRef={asuransiRef}
-          handlerFetchData={getOptionInsurance}
-          handlerOnChange={(value) => handleOnChangeAsuransi(value)}
-        />
-      ) : null}
+      ) : null} */}
       {filter === "prioritas" ? (
         <SelectAsync
-          id="id"
+          id="prioritas"
           labelField="Prioritas"
-          labelOptionRef="prioritas"
-          valueOptionRef="id"
+          labelOptionRef="name_prioritas"
+          valueOptionRef="id_prioritas"
           handlerRef={prioritasRef}
-          handlerFetchData={getListOptionPrioritas}
+          handlerFetchData={getListOptionPrioritasLab}
           handlerOnChange={(value) => handleOnChangePrioritas(value)}
+        />
+      ) : null}
+      {filter === "unit" ? (
+        <SelectAsync
+          id="unit"
+          labelField="Unit"
+          labelOptionRef="name"
+          valueOptionRef="id_unit"
+          handlerRef={prioritasRef}
+          handlerFetchData={getListOptionUnit}
+          handlerOnChange={(value) => handleOnChangeUnit(value)}
         />
       ) : null}
       {filter === "date" ? (
@@ -452,8 +494,22 @@ const TableLayoutPasienLab = ({
   return (
     <>
       <div className={st.container}>
-        <div className={st.header}>
+      <div className={st.header}>
           <h2 className="color-grey-text">{title}</h2>
+          {isBtnAdd ? (
+            <Button
+              variant="contained"
+              endIcon={<PlusIcon />}
+              disabled={!isPermitted("store")}
+              onClick={
+                !customCreatePath
+                  ? () => router.push(`${baseRoutePath}/create`)
+                  : () => router.push(customCreatePath)
+              }
+            >
+              {customBtnAddTitle ? <>{customBtnAddTitle}</> : <>{title} Baru</>}
+            </Button>
+          ) : null}
         </div>
         <Box sx={{ width: "100%", marginY: 4 }}>
           <Paper sx={{ width: "100%", padding: 2 }}>

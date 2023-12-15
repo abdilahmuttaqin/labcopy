@@ -56,17 +56,10 @@ export const statusPPA = [
   { name: "FISIOTERPI", value: "7" },
 ];
 
-export const golDarah = [
-  { name: "A", value: "1" },
-  { name: "B", value: "2" },
-  { name: "AB", value: "3" },
-  { name: "O", value: "4" },
-];
-
 export const cara_bayar = [
-  { name: "TUNAI", value: "1" },
-  { name: "TAGIHAN", value: "2" },
-  { name: "Lada Manis", value: "3" },
+  { name: "TUNAI", value: "Tunai" },
+  { name: "TAGIHAN", value: "Tagihan" },
+  { name: "Lada Manis", value: "Lada Manis" },
 ];
 
 export const rh = [

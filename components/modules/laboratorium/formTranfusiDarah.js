@@ -21,11 +21,11 @@ import { getListOptionEmployee } from "api/employee";
 import { golDarah } from "public/static/data";
 import { rh } from "public/static/data";
 import { cara_bayar } from "public/static/data";
+import { bloodType } from "public/static/data";
 import { formatIsoToGen } from "utils/formatTime";
 import useClientPermission from "custom-hooks/useClientPermission";
 import ReactToPrint from "react-to-print";
 import PrintIcon from "@mui/icons-material/Print";
-
 
 
 const CheckupToPrint = forwardRef(function CheckupToPrint({ data }, ref) {
@@ -46,7 +46,7 @@ const CheckupToPrint = forwardRef(function CheckupToPrint({ data }, ref) {
     </div>
   </div>
 
-  <hr></hr>
+  {/* <hr></hr>
   <center><div className="font-w-600">HASIL PEMERIKSAAN LABORATORIUM</div></center>
       <div className="flex p-4" style={{ display: "flex", justifyContent: "space-between" }}>
         <div className="column">
@@ -65,7 +65,7 @@ const CheckupToPrint = forwardRef(function CheckupToPrint({ data }, ref) {
           <div>Pelayanan: {data.poli || "-"}</div>
         </div>
       </div>
-      <div>Hasil Expertise: {data.hasil_expertise || "-"}</div>
+      <div>Hasil Expertise: {data.hasil_expertise || "-"}</div> */}
 
 
 </div>
@@ -142,8 +142,8 @@ const FormTranfusi = ({
       };
       try {
         if (!isEditType) {
-          await createSuster(data);
-          resetForm();
+          // await createSuster(data);
+          // resetForm();
         } else {
           await updateTranfusiDarah({ ...data, id: detailPrePopulatedData.id });
           const response = await getDetailTransfusiDarah({
@@ -240,7 +240,7 @@ const FormTranfusi = ({
                   id="gol_darah"
                   handlerRef={tranfusiValidation}
                   label="Gol Darah"
-                  options={golDarah}
+                  options={bloodType}
                 />
               </div>
               </Grid>
@@ -387,31 +387,7 @@ const FormTranfusi = ({
                 loading={tranfusiValidation.isSubmitting}
               >
                 Simpan perubahan
-              </LoadingButton>
-
-              {/* <ReactToPrint
-                trigger={() => (
-                  <Button variant="outlined" startIcon={<PrintIcon />}>
-                    EXPORT HASIL
-                  </Button>
-                )}
-                content={() => checkupPrintRef.current}
-              /><CheckupToPrint
-                data={{
-                  no_pemeriksaan: detailPrePopulatedData.no_pemeriksaan,
-                  no_rm: detailPrePopulatedData.no_rm,
-                  nama_pasien: detailPrePopulatedData.nama_pasien,
-                  tanggal_lahir: detailPrePopulatedData.tanggal_lahir,
-                  umur: detailPrePopulatedData.umur,
-                  tanggal_pemeriksaan: detailPrePopulatedData.tanggal_pemeriksaan,
-                  diagnosis_kerja: detailPrePopulatedData.diagnosis_kerja,
-                  nama_pemeriksaan: detailPrePopulatedData.nama_pemeriksaan,
-                  jenis_pemeriksaan: detailPrePopulatedData.jenis_pemeriksaan,
-                  dokter_pengirim: detailPrePopulatedData.dokter_pengirim,
-                  poli: detailPrePopulatedData.poli,
-                }}
-                ref={checkupPrintRef}
-              /> */}
+              </LoadingButton>  
           </div>
         </form>
       </Paper>

@@ -67,20 +67,32 @@ const FormPermintaanLab1 = ({
 
   const detailMutasiTableHead = [
     {
-      id: 'nama_barang',
+      id: 'kode_item',
       label: 'Kode Item',
+    },
+    {
+      id: 'nama_item',
+      label: 'Nama Item',
+    },
+    {
+      id: 'nomor_batch',
+      label: 'Nomor Batch',
     },
     {
       id: 'jumlah',
       label: 'Jumlah Permintaan',
     },
+
   ];
 
   const dataDetailFormatHandler = (payload) => {
     const result = payload.map((e) => {
       return {
-        nama_barang: e.item.kode || 'null',
+        kode_item: e.item.kode || 'null',
+        nama_item: e.item.name,
+        nomor_batch: e.nomor_batch || 'null',
         jumlah: e.jumlah || 'null',
+
         id: e,
       };
     });
@@ -94,6 +106,8 @@ const FormPermintaanLab1 = ({
   const mutasiInitialValues = !isEditType
     ? {
         tanggal_permintaan: null,
+
+        mutation_detail: [],
       }
     : prePopulatedDataForm;
 
@@ -126,8 +140,7 @@ const FormPermintaanLab1 = ({
       data = {
         ...data,
         tanggal_permintaan: formatIsoToGen(data.tanggal_permintaan),
-        tanggal_mutasi: formatIsoToGen(data.tanggal_mutasi),
-        unit: data.unit.id,
+
       };
       console.log(data);
       try {
@@ -271,6 +284,8 @@ const FormPermintaanLab1 = ({
                     </div>
                   </Grid>
                 </Grid>
+                
+
               </Grid>
             </Grid>
           </div>
@@ -317,41 +332,7 @@ const FormPermintaanLab1 = ({
                       {formatReadable(detailPrePopulatedData?.updated_at)}
                     </p>
                   </div>
-                  <div className='mr-auto flex'>
-                    <div className='mr-8'>
-                      <ReactToPrint
-                        trigger={() => (
-                          <Button variant='outlined' startIcon={<PrintIcon />}>
-                            Cetak Label
-                          </Button>
-                        )}
-                        content={() => labelPrintRef.current}
-                      />
-                      <LabelToPrint
-                        data={{
-                          nomor_po: detailPrePopulatedData.nomor_po,
-                          tanggal_po: detailPrePopulatedData.tanggal_po,
-                        }}
-                        ref={labelPrintRef}
-                      />
-                    </div>
-                    <div>
-                      <ReactToPrint
-                        trigger={() => (
-                          <Button variant='outlined' startIcon={<PrintIcon />}>
-                            Cetak Kartu Periksa
-                          </Button>
-                        )}
-                        content={() => checkupPrintRef.current}
-                      />
-                      <CheckupToPrint
-                        data={{
-                          no_rm: detailPrePopulatedData.nomor_po,
-                        }}
-                        ref={checkupPrintRef}
-                      />
-                    </div>
-                  </div>
+
                 </>
               )}
               <Button
@@ -389,7 +370,7 @@ const FormPermintaanLab1 = ({
                   loadingPosition='start'
                   loading={createMutasiValidation.isSubmitting}
                 >
-                  Simpan Permintaan
+                  Simpan Mutasi
                 </LoadingButton>
               )}
             </div>

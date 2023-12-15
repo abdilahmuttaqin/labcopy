@@ -1,183 +1,30 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { getDetailPasien } from "api/pasien";
-import {
-  getDetailAsesmenPasienLaboratorium,
-  getDetailAsesmenPemeriksaanLaboratorium,
-  getDetailGroupingPemeriksaanLaboratorium,
-  getDetailPermintaanPemeriksaanLaboratorium,
-  getDetailLaboratorium,
-} from "api/laboratorium";
+import { getDetailLaboratorium } from "api/laboratorium";
 import LoaderOnLayout from "components/LoaderOnLayout";
-import FormPasien from "components/modules/pasien/form";
 import { formatGenToIso } from "utils/formatTime";
 import getStaticData from "utils/getStaticData";
-import Popover from "@mui/material/Popover";
-import TableLayout from "pages/pasien/TableLayout";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import useClientPermission from "custom-hooks/useClientPermission";
 import { formatLabelDate } from "utils/formatTime";
-import { Grid, Card, IconButton, Tooltip, Avatar, Dialog } from "@mui/material";
+import { Grid, Card, Avatar } from "@mui/material";
 import PermContactCalendarIcon from "@mui/icons-material/PermContactCalendar";
-import FormExpertise from "components/modules/laboratorium/formExpertise";
-import RiwayatPemeriksaanTable from "components/modules/laboratorium/riwayatPemeriksaanTable";
-import Assessment from "components/modules/laboratorium/assessment";
+import TriasePasienForm from "components/modules/laboratorium/TriasePasienform";
 import FormHasilPemeriksaan from "components/modules/laboratorium/formHasilPemeriksaan";
-import PermintaanLaboratoriumTableLayout from "components/modules/laboratorium/permintaanLaboratoriumTableLayout";
+import Laboratorium from "components/modules/laboratorium/permintaanLaboratoriumTableLayout";
+import RiwayatPemeriksaanTable from "components/modules/laboratorium/riwayatPemeriksaanTable";
+import AssessmentLaboratorium from "components/modules/laboratorium/assessment";
 
-const permintaanTableHead = [
-  {
-    id: "no_pemeriksaan",
-    label: "No. Pemeriksaan",
-  },
-  {
-    id: "waktu_permintaan",
-    label: "Waktu Permintaan",
-  },
-  {
-    id: "dokter_pengirim",
-    label: "Dokter Pengirim",
-  },
-  {
-    id: "unit",
-    label: "Unit Pengirim",
-  },
-  {
-    id: "diagnosis_kerja",
-    label: "Diagnosis Kerja",
-  },
-  {
-    id: "catatan_permintaan",
-    label: "Catatan Permintaan",
-  },
-];
-const dataPermintaanLaboratoriumFormatHandler = (
-  payload,
-) => {
-  const result = payload.map((e) => {
-    return {
-      no_pemeriksaan: e.no_pemeriksaan || "null",
-      waktu_permintaan_pemeriksaan: e.waktu_permintaan_pemeriksaan || "null",
-      dokter_pengirim: e.dokter_pengirim || "null",
-      unit_pengirim: e.unit_pengirim || "null",
-      diagnosis_kerja: e.diagnosis_kerja || "null",
-      catatan_permintaan: e.catatan_permintaan || "null",
-      id: e.id,
-    };
-  });
-  return result;
-};
-
-const riwayatPemeriksaanTableHead = [
-  {
-    id: "tanggal_pemeriksaan",
-    label: "Tanggal Pemeriksaan",
-  },
-  {
-    id: "no_pemeriksaan",
-    label: "No. Pemeriksaan",
-  },
-  {
-    id: "nama_pemeriksaan",
-    label: "Nama Pemeriksaan",
-  },
-  {
-    id: "jenis_pemeriksaan",
-    label: "Jenis Pemeriksaan",
-  },
-  {
-    id: "dokter_pengirim",
-    label: "Dokter Pengirim",
-  },
-  {
-    id: "diagnosis_kerja",
-    label: "Diagnosis Kerja",
-  },
-];
-
-const DetailLaboratorium = () => {
+const Detail = () => {
   const router = useRouter();
   const { slug } = router.query;
-  const [isEditingMode, setIsEditingMode] = useState(false);
   const [dataPasien, setDataPasien] = useState({});
   const [detailDataPasien, setDetailDataPasien] = useState({});
   const [isLoadingDataPasien, setIsLoadingDataPasien] = useState(true);
+  const [activeContent, setActiveContent] = useState(1);
 
-  const [dataPermintaanLaboratoriumPerPage, setPermintaanLaboratriumPerPage] =
-    useState(8);
-  const [
-    isLoadingDataPermintaanLaboratorium,
-    setIsLoadingDataPermintaanLaboratorium,
-  ] = useState(false);
-  const [
-    isUpdatingDataPermintaanLaboratorium,
-    setIsUpdatingDataPermintaanLaboratorium,
-  ] = useState(false);
-
-  const [menuState, setMenuState] = useState(null);
-  const { isActionPermitted } = useClientPermission();
-  const openMenuPopover = Boolean(menuState);
-  const menuPopover = menuState ? "menu-popover" : undefined;
-  const [dialogProfileState, setDialogProfileState] = useState(false);
-  const handleIsEditingMode = (e) => {
-    setIsEditingMode(e.target.checked);
-  };
-
-  const initDataPermintaanLaboratorium = async () => {
-    try {
-      setIsLoadingDataPermintaanLaboratorium(true);
-      const params = {
-        per_page: dataPermintaanLaboratoriumPerPage,
-      };
-      const response = await getListLaboratorium(params);
-      const result = dataPermintaanLaboratoriumFormatHandler(response.data.data);
-      setDataPermintaanLaboratorium(result);
-      setDataMetaPermintaanLaboratorium(response.data.meta);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoadingDataPermintaanLaboratorium(false);
-    }
-  };
-
-  const updateDataRoleHandler = async (payload) => {
-    try {
-      setIsUpdatingDataPermintaanLaboratorium(true);
-      const response = await getListEmployee(payload);
-      const result = dataPermintaanLaboratoriumFormatHandler(response.data.data);
-      setDataPermintaanLaboratorium(result);
-      setDataMetaPermintaanLaboratorium(response.data.meta);
-    } catch (error) {
-      console.log(error);
-      setSnackbarState({
-        state: true,
-        type: "error",
-        message: error.message,
-      });
-    } finally {
-      setIsUpdatingDataPermintaanLaboratorium(false);
-    }
-  };
-
-  const [dataPermintaanLaboratorium, setDataPermintaanLaboratorium] = useState({});
-  const [detailDataPermintaanLaboratrium, setDetailDataPermintaanLaboratrium] =
-    useState({});
-  const [dataMetaPermintaanLaboratorium, setDataMetaPermintaanLaboratorium] =
-    useState({});
-  const [dataLaboratrium, setDataLaboratrium] = useState({});
-  const [detailDataAntrianLaboratorium, setDetailDataAntrianLaboratorium] = useState(
-    {}
-  );
-  const [isLoadingDataLaboratrium, setIsLoadingDataLaboratrium] = useState(true);
-
-  const [detailAssPas, setDataAssPas] = useState({});
-  const [detailAssPem, setDataAssPem] = useState({});
-
-  const dataFormatterPasien = (data) => {
+  const dataFormatter = (data) => {
     let tempData = {
-      nama_pasien: data.nama_pasien || "", 
-      tarif: data.tarif || "0",
+      nama_pasien: data.nama_pasien || "",
       jenis_kelamin:
         data.jenis_kelamin !== null && data.jenis_kelamin !== undefined
           ? data.jenis_kelamin
@@ -214,8 +61,6 @@ const DetailLaboratorium = () => {
       asuransi: data.asuransi || { id: "", name: "" },
       suku: data.suku || { id: "", name: "" },
       bahasa: data.bahasa || { id: "", name: "" },
-      permintaan: [],
-      riwayat: [],
     };
     if (tempData.kewarganegaraan.label === "Indonesia") {
       tempData.showNik = true;
@@ -223,112 +68,29 @@ const DetailLaboratorium = () => {
     return { ...tempData };
   };
 
-  const updateData = (data) => {
-    setDetailDataLaboratrium(data);
-    setDataLaboratrium(() => dataFormatter(data));
-  };
-
   useEffect(() => {
-    initDataPermintaanLaboratorium();
     if (router.isReady) {
       (async () => {
         try {
-          const responseAntriandetail = await getDetailLaboratorium({ id: slug[0] });
-          const dataAntriandetail = responseAntriandetail.data.data;
-          setDetailDataAntrianLaboratorium(dataAntriandetail);
-          const noAntrian = dataAntriandetail.no_antrian;
-          const idPasien = dataAntriandetail.pasien_id;
-          initDataPermintaanLaboratorium();
-
-          const responsePasien = await getDetailPasien({ id: idPasien });
-          const dataPasien = responsePasien.data.data;
-          const formattedDataPasien = dataFormatterPasien(dataPasien);
-          setDataPasien(formattedDataPasien);
-          setDetailDataPasien(dataPasien);
-
-          const responsePermintaan =
-            await getDetailPermintaanPemeriksaanLaboratorium({
-              no_antrian: noAntrian,
-            });
-          const dataPermintaan = responsePermintaan.data.data;
-          setDataPermintaanLaboratorium(dataPermintaan);
-          const groupingId =
-            dataPermintaan[0].grouping_pemeriksaan_laboratorium_id;
-          const permintaanId = dataPermintaan[0].id;
-
-          const responseGrouping = await getDetailGroupingPemeriksaanLaboratorium({
-            id: groupingId,
-          });
-          const dataGrouping = responseGrouping.data.data;
-          const namaPemeriksaan = dataGrouping.kategori_pemeriksaan;
-          const jenisPemeriksaan = dataGrouping.jenis_pemeriksaan;
-
-          const formattedDataPermintaanLaboratorium =
-            dataPermintaanLaboratoriumFormatHandler(
-              dataPermintaan,
-              namaPemeriksaan,
-              jenisPemeriksaan
-            );
-
-          setDataPermintaanLaboratorium(formattedDataPermintaanLaboratorium);
-
-          const responseAsesmenPasienLaboratorium =
-            await getDetailAsesmenPasienLaboratorium({ no_antrian: noAntrian });
-          const dataAssPas = responseAsesmenPasienLaboratorium.data.data;
-          setDataAssPas(dataAssPas);
-
-          const responseAsesmenPemeriksaanLaboratorium =
-            await getDetailAsesmenPemeriksaanLaboratorium({
-              permintaanId: permintaanId,
-            });
-          const dataAssPem = responseAsesmenPemeriksaanLaboratorium.data.data;
-          setDataAssPem(dataAssPem);
+          const response = await getDetailLaboratorium({ id: slug[0] });
+          const data = response.data.data.pasien;
+          const formattedData = dataFormatter(data);
+          setDataPasien(formattedData);
+          setDetailDataPasien(data);
         } catch (error) {
           console.log(error);
         } finally {
           setIsLoadingDataPasien(false);
-          setIsLoadingDataPermintaanLaboratorium(false);
         }
       })();
     }
   }, [router.isReady, slug]);
 
-  const menuItems = [
-    {
-      label: "Permintaan Laboratorium",
-      component: (
-        <>
-          <PermintaanLaboratoriumTableLayout
-            tableHead={permintaanTableHead}
-            data={dataPermintaanLaboratorium}
-          ></PermintaanLaboratoriumTableLayout>
-        </>
-      ),
-    },
-    {
-      label: "Assessment Pemeriksaan",
-      component: (
-        <Assessment
-          namaPemeriksaan={
-            dataPermintaanLaboratorium.permintaan?.[0]?.nama_pemeriksaan
-          }
-          jenisPemeriksaan={
-            dataPermintaanLaboratorium.permintaan?.[0]?.jenis_pemeriksaan
-          }
-        />
-      ),
-    },
-    { label: "Hasil Pemeriksaan", component: <FormHasilPemeriksaan /> },
-    { label: "Riwayat Pemeriksaan", component: <RiwayatPemeriksaanTable /> },
-  ];
-
-  const [selectedTab, setSelectedTab] = useState(0);
-
   return (
     <>
       {isLoadingDataPasien ? (
         <LoaderOnLayout />
-      ) : (  
+      ) : (
         <>
           <Grid container spacing={2}>
             <Grid item md={6} sm={12}>
@@ -339,8 +101,9 @@ const DetailLaboratorium = () => {
                       fontSize="small"
                       style={{ color: "rgb(99, 115, 129)" }}
                     />
-                    <p className="m-0 ml-8 font-14">Pasien Info</p>
+                    <p className="m-0 ml-8 font-14">Pasien Laboratorium</p>
                   </div>
+                  <div className="flex items-center"></div>
                 </div>
                 <div className="flex justify-between items-start">
                   <div className="flex items-start">
@@ -380,7 +143,6 @@ const DetailLaboratorium = () => {
               </Card>
             </Grid>
 
-            {/* Tambahkan tabel di sini */}
             <Grid item md={6} sm={12}>
               <table className="custom-table">
                 <thead>
@@ -408,43 +170,46 @@ const DetailLaboratorium = () => {
                 </thead>
               </table>
             </Grid>
+
+            <Grid item md={12} sm={12}>
+              <div className="tab-list flex">
+                <div
+                  className={activeContent === 1 ? "pointer active" : "pointer"}
+                  onClick={() => setActiveContent(1)}
+                >
+                  Permintaan Laboratorium
+                </div>
+                <div
+                  className={activeContent === 2 ? "pointer active" : "pointer"}
+                  onClick={() => setActiveContent(2)}
+                >
+                  Assessment Pemeriksaan
+                </div>
+                <div
+                  className={activeContent === 3 ? "pointer active" : "pointer"}
+                  onClick={() => setActiveContent(3)}
+                >
+                  Hasil Pemeriksaan
+                </div>
+                <div
+                  className={activeContent === 4 ? "pointer active" : "pointer"}
+                  onClick={() => setActiveContent(4)}
+                >
+                  Riwayat Pemeriksaan
+                </div>
+              </div>
+            </Grid>
+            <Grid item md={12} sm={12}>
+              {activeContent === 1 && <Laboratorium/>}
+              {activeContent === 2 && <AssessmentLaboratorium/>}
+              {activeContent === 3 && <FormHasilPemeriksaan />}
+              {activeContent === 4 && <RiwayatPemeriksaanTable/>}
+            </Grid>
           </Grid>
-          
-          <Tabs
-            value={selectedTab}
-            onChange={(event, newValue) => setSelectedTab(newValue)}
-            variant="scrollable"
-            scrollButtons="auto"
-            aria-label="Sub-menu"
-            sx={{ marginBottom: "16px" }} // Add spacing below the tabs
-          >
-            {menuItems.map((item, index) => (
-              <Tab
-                key={index}
-                label={item.label}
-                sx={{
-                  borderBottom:
-                    selectedTab === index ? "2px solid #3f51b5" : "none",
-                  marginRight: "16px", // Add spacing between tabs
-                }}
-              />
-            ))}
-          </Tabs>
-          <Card
-            sx={{
-              border: "1px solid #e0e0e0",
-              borderTop: "none",
-              borderRadius: "0px",
-              marginBottom: "16px", // Add spacing below the card
-            }}
-          >
-            {menuItems[selectedTab].component}
-          </Card>
         </>
       )}
-      
     </>
   );
 };
 
-export default DetailLaboratorium;
+export default Detail;

@@ -6,6 +6,7 @@ import Snackbar from "components/SnackbarMui";
 import { formatReadable } from "utils/formatTime";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 import TableLayoutPermintaanLab from "components/TableLayoutPermintaanLab";
+import TableLayoutInventoryLab from "components/TableLayoutInventoryLab";
 
 const PermintaanLabTableHead = [
   {
@@ -142,7 +143,7 @@ const PermintaanLab = () => {
             <Spinner />
           </div>
         ) : (
-          <TableLayoutPermintaanLab
+          <TableLayoutInventoryLab
             baseRoutePath={`${router.asPath}`}
             title="Permintaan"
             tableHead={PermintaanLabTableHead}
